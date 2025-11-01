@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "617b57b75147ea81aeb452088c25cf8a5d414f52b3f2b08fe249ee3279f15678"
+            "sha256": "cc738565985da354d863e011e07591e99d5633ed3e0439edca5691476b69bb49"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -291,6 +291,15 @@
             ],
             "index": "pypi",
             "version": "==0.22.0"
+        },
+        "invoke": {
+            "hashes": [
+                "sha256:2413bc441b376e5cd3f55bb5d364f973ad8bdd7bf87e53c79de3c11bf3feecc8",
+                "sha256:515bf49b4a48932b79b024590348da22f39c4942dff991ad1fb8b8baea1be707"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.6'",
+            "version": "==2.2.1"
         },
         "jmespath": {
             "hashes": [
@@ -1145,15 +1154,6 @@
             ],
             "markers": "python_version >= '3.10'",
             "version": "==2.3.0"
-        },
-        "invoke": {
-            "hashes": [
-                "sha256:2413bc441b376e5cd3f55bb5d364f973ad8bdd7bf87e53c79de3c11bf3feecc8",
-                "sha256:515bf49b4a48932b79b024590348da22f39c4942dff991ad1fb8b8baea1be707"
-            ],
-            "index": "pypi",
-            "markers": "python_version >= '3.6'",
-            "version": "==2.2.1"
         },
         "lxml": {
             "hashes": [
