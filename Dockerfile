@@ -25,7 +25,8 @@ RUN echo "Package: *\nPin: release n=bookworm\nPin-Priority: 50\n" >> /etc/apt/p
     apt-get install --no-install-recommends -y -t bookworm pcsc-tools pcscd && \
     apt-get install --no-install-recommends -y procps unzip curl && \
     rm -rf /var/lib/apt/lists/* && \
-    curl https://dbs-download.obs.otc.t-systems.com/rds/ca-bundle.pem -o /opt/rds-ca-bundle.pem
+    (curl --fail --show-error --location --retry 3 --retry-delay 3 https://dbs-download.obs.otc.t-systems.com/rds/ca-bundle.pem -o /opt/rds-ca-bundle.pem \
+     || curl --fail --show-error --location --retry 3 --retry-delay 3 https://truststore.pki.rds.amazonaws.com/global/global-bundle.pem -o /opt/rds-ca-bundle.pem)
 
 # Install debugging tools
 # RUN apt-get update && \
