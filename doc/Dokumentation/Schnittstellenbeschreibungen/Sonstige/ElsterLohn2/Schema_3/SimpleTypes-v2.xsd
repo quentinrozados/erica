@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2" targetNamespace="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2">
+	<xs:simpleType name="VDMSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Der Zeichensatzumfang ISO 8859-15  wird um die nicht druckbaren Zeichen reduziert.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[&#x000a;&#x000d;&#x0020;&#x0021;&#x0022;&#x0023;&#x0024;&#x0025;&#x0026;&#x0027;&#x0028;&#x0029;&#x002a;&#x002b;&#x002c;&#x002d;&#x002e;&#x002f;&#x0030;&#x0031;&#x0032;&#x0033;&#x0034;&#x0035;&#x0036;&#x0037;&#x0038;&#x0039;&#x003a;&#x003b;&#x003c;&#x003d;&#x003e;&#x003f;&#x0040;&#x0041;&#x0042;&#x0043;&#x0044;&#x0045;&#x0046;&#x0047;&#x0048;&#x0049;&#x004a;&#x004b;&#x004c;&#x004d;&#x004e;&#x004f;&#x0050;&#x0051;&#x0052;&#x0053;&#x0054;&#x0055;&#x0056;&#x0057;&#x0058;&#x0059;&#x005a;\\\[&#x005c;&#x005d;&#x005e;&#x005f;&#x0060;&#x0061;&#x0062;&#x0063;&#x0064;&#x0065;&#x0066;&#x0067;&#x0068;&#x0069;&#x006a;&#x006b;&#x006c;&#x006d;&#x006e;&#x006f;&#x0070;&#x0071;&#x0072;&#x0073;&#x0074;&#x0075;&#x0076;&#x0077;&#x0078;&#x0079;&#x007a;&#x007b;&#x007c;&#x007d;&#x007e;&#x00a1;&#x00a2;&#x00a3;&#x00a5;&#x00a7;&#x00aa;&#x00ab;&#x00ac;&#x00ae;&#x00af;&#x00b0;&#x00b1;&#x00b2;&#x00b3;&#x00b5;&#x00b9;&#x00ba;&#x00bb;&#x00bf;&#x00c0;&#x00c1;&#x00c2;&#x00c3;&#x00c4;&#x00c5;&#x00c6;&#x00c7;&#x00c8;&#x00c9;&#x00ca;&#x00cb;&#x00cc;&#x00cd;&#x00ce;&#x00cf;&#x00d0;&#x00d1;&#x00d2;&#x00d3;&#x00d4;&#x00d5;&#x00d6;&#x00d7;&#x00d8;&#x00d9;&#x00da;&#x00db;&#x00dc;&#x00dd;&#x00de;&#x00df;&#x00e0;&#x00e1;&#x00e2;&#x00e3;&#x00e4;&#x00e5;&#x00e6;&#x00e7;&#x00e8;&#x00e9;&#x00ea;&#x00eb;&#x00ec;&#x00ed;&#x00ee;&#x00ef;&#x00f0;&#x00f1;&#x00f2;&#x00f3;&#x00f4;&#x00f5;&#x00f6;&#x00f7;&#x00f8;&#x00f9;&#x00fa;&#x00fb;&#x00fc;&#x00fd;&#x00fe;&#x00ff;&#x0152;&#x0153;&#x0160;&#x0161;&#x0178;&#x017d;&#x017e;&#x20ac;]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="NutzdatenTicketSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Ticket fuer Fehlerbehandlung zur Identifizierung der einzelnen Nutzdatenblöcke.
+Ist nur ein Nutzdatenblock vorhanden, so bietet sich hier der Wert _1_ an.
+Wird vom Datenlieferant gefuellt und muss in der Datenlieferung eindeutig sein.</xs:documentation>
+			<xs:documentation xml:lang="DE">32-stellig alphanummerisch</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="VDMSimple">
+			<xs:maxLength value="32"/>
+			<xs:minLength value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="IdNrSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">die 11-stellige IdNr
+				gemaess Paragraph 139b AO
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="TextSimple">
+			<xs:length value="11"/>
+			<xs:pattern value="\d{11}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="StNrSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">gemaess Elster Developers
+				Toolkit
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">13-stellig Nummerisch
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Bundesfinanzamtsnummer +
+				0 + Bezirk + Unterscheidungsnr. + Pruefziffer
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="TextSimple">
+			<xs:length value="13"/>
+			<xs:pattern value="28\d{2}0\d{8}"/>
+			<xs:pattern value="91\d{2}0\d{8}"/>
+			<xs:pattern value="92\d{2}0\d{8}"/>
+			<xs:pattern value="11\d{2}0\d{8}"/>
+			<xs:pattern value="30\d{2}0\d{8}"/>
+			<xs:pattern value="24\d{2}0\d{8}"/>
+			<xs:pattern value="22\d{2}0\d{8}"/>
+			<xs:pattern value="26\d{2}0\d{8}"/>
+			<xs:pattern value="40\d{2}0\d{8}"/>
+			<xs:pattern value="23\d{2}0\d{8}"/>
+			<xs:pattern value="27\d{2}0\d{8}"/>
+			<xs:pattern value="10\d{2}0\d{8}"/>
+			<xs:pattern value="32\d{2}0\d{8}"/>
+			<xs:pattern value="31\d{2}0\d{8}"/>
+			<xs:pattern value="21\d{2}0\d{8}"/>
+			<xs:pattern value="41\d{2}0\d{8}"/>
+			<xs:pattern value="51\d{2}0\d{8}"/>
+			<xs:pattern value="52\d{2}0\d{8}"/>
+			<xs:pattern value="53\d{2}0\d{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="DatumSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Datum 8-stellig ohne
+				Trennzeichen
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Format : JJJJMMTT
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="TextSimple">
+			<xs:length value="8"/>
+			<xs:pattern value="(19|20)[0-9]{2}(((01|03|05|07|08|10|12)(0[1-9]|[12][0-9]|3[01]))|(02(0[1-9]|[12][0-9]))|((04|06|09|11)(0[1-9]|[12][0-9]|30)))"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="GeburtsdatumSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">Datum 8-stellig ohne
+				Trennzeichen
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Format : JJJJMMTT
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Laesst auch teilweise oder
+				vollstaendig unbekannte Daten zu. In diesen Faellen wird der Wert fuer
+				Tag, Monat oder Jahr entsprechend genullt (19501231, 19501200,
+				19500000, 00000000)
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="TextSimple">
+			<xs:length value="8"/>
+			<xs:pattern value="(((18)(8|9)\d)|((19|20)\d{2})|(0000))(([0][0-9])|([1][0-2]))[0-3][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TextSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">die Einschraenkungen sind
+				in der Schnittstellenbeschreibung SST_Arbeitgeber zu entnehmen"
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="KeineTrennzeichenSimple">
+			<xs:pattern value="[\p{L}\p{P}\p{Zs}\p{Nd}]*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KeineTrennzeichenSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">das letzte Zeichen darf
+				nicht vom Typ {Z} sein, zusaetzlich gelten die Einschraenkungen des
+				BaseStringNoLeadingSeparators
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Verweis auf
+				http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#regexs
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="KeineFuehrendenTrennzeichenSimple">
+			<xs:pattern value=".*[^\p{Z}_`^}]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KeineFuehrendenTrennzeichenSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">das erste Zeichen darf
+				nicht vom Typ {Z} sein, zusaetzlich gelten die Einschraenkungen des
+				BaseStringUltraLight
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Verweis auf
+				http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#regexs
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="EinfacherTextSimple">
+			<xs:pattern value="[^\p{Z}_`^}].*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="EinfacherTextSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">alle Zeichen die nicht
+				Kategorien C oder Zl gehoeren
+			</xs:documentation>
+			<xs:documentation xml:lang="DE">Verweis auf
+				http://www.w3.org/TR/2001/REC-xmlschema-2-20010502/#regexs
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([^\n\r\t\p{C}\p{Zl}])*"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BetragSimple">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="999999999"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="HinweisSimple">
+		<xs:annotation>
+			<xs:documentation>Beschreibt die Art des Hinweises, also z.B. eine
+				Information oder Fehler ist.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="INFORMATION"/>
+			<xs:enumeration value="ABLEHNUNG"/>
+			<xs:enumeration value="FEHLER"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="ArtSimple">
+		<xs:annotation>
+			<xs:documentation>Beschreibt die Art der Aenderungsliste, also z.B. ob
+				es eine regulaere AeL oder eine Anmeldebestaetigungsliste ist.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="BRUTTOLISTE"/>
+			<xs:enumeration value="MONATSLISTE"/>
+			<xs:enumeration value="ANMELDEBESTAETIGUNGSLISTE"/>
+			<xs:enumeration value="ABMELDEBESTAETIGUNGSLISTE"/>
+			<xs:enumeration value="UMMELDEBESTAETIGUNGSLISTE"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="SteuerklasseSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE"> Die fuer den
+				Lohnsteuerabzug massgebliche Lohnsteuerklasse gem. Lohnsteuerkarte
+				bzw. besonderer Lohnsteuerbescheinigung. Die
+				Steuerklasse "0" ist
+				ausschliesslich bei besonderen Lohnsteurbescheinigungen
+				zulaessig fuer
+				Arbeitnehmer mit Wohnsitz im Ausland, deren Arbeitslohn
+				gem.
+				Doppelbesteuerungsabkommen steuerfrei ist.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="6"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="KonfessionSimple">
+		<xs:restriction base="TextSimple">
+			<xs:length value="2"/>
+			<xs:enumeration value="ak"/>
+			<xs:enumeration value="ev"/>
+			<xs:enumeration value="fa"/>
+			<xs:enumeration value="fb"/>
+			<xs:enumeration value="fg"/>
+			<xs:enumeration value="fm"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="fs"/>
+			<xs:enumeration value="ib"/>
+			<xs:enumeration value="ih"/>
+			<xs:enumeration value="il"/>
+			<xs:enumeration value="is"/>
+			<xs:enumeration value="iw"/>
+			<xs:enumeration value="jd"/>
+			<xs:enumeration value="jh"/>
+			<xs:enumeration value="lt"/>
+			<xs:enumeration value="na"/>
+			<xs:enumeration value="rf"/>
+			<xs:enumeration value="rk"/>
+			<xs:enumeration value="--"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="TransferTicketSimple">
+		<xs:annotation>
+			<xs:documentation xml:lang="DE">TransferTicket.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="TextSimple">
+			<xs:pattern value="\d{19}"/>
+			<xs:pattern value="[a-km-z0-9]{32}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="BetragDezimalSimple">
+		<xs:restriction base="xs:decimal">
+			<xs:fractionDigits value="2"/>
+			<xs:maxInclusive value="999999999.99"/>
+			<xs:minInclusive value="0.00"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,2422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Schema automatisch generiert von ElsterRules 53.1.0 -->
+<!-- Schema entsprechend eXML-Spezifikation Version 2.0 -->
+<!-- VAST_Vorberechnungen - 2024 - 2.0 -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" xmlns="http://finkonsens.de/elster/elstervast/vast_vorberechnungen/v2024" targetNamespace="http://finkonsens.de/elster/elstervast/vast_vorberechnungen/v2024" xmlns:exml="http://finkonsens.de/elster/elstervast/vast_vorberechnungen/v2024">
+    <!-- XML-Typdefinitionen fuer eXML -->
+    <!-- Definition der datenartspezifischen eXML-Struktur -->
+    <xs:simpleType name="DezimalzahlNichtNegOhneFuehrNullBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[1-9][0-9]*(,[0-9]+)?">
+                <xs:annotation>
+                    <xs:documentation>Positive Zahlen ab 1</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0,[0-9]*[1-9][0-9]*">
+                <xs:annotation>
+                    <xs:documentation>Zahlen aus dem offenen Intervall (0, 1)</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0(,0+)?">
+                <xs:annotation>
+                    <xs:documentation>Nullwerte</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DezimalzahlOhneFuehrNullBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="-?[1-9][0-9]*(,[0-9]+)?">
+                <xs:annotation>
+                    <xs:documentation>Zahlen außerhalb des offenen Intervalls (-1, 1)</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="-?0,[0-9]*[1-9][0-9]*">
+                <xs:annotation>
+                    <xs:documentation>Zahlen aus den offenen Intervallen (-1, 0) und (0, 1)</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+            <xs:pattern value="0(,0+)?">
+                <xs:annotation>
+                    <xs:documentation>Nullwerte</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNegOhneFuehrNullBaseSType">
+        <xs:restriction base="xs:nonNegativeInteger">
+            <xs:pattern value="[1-9].*|0">
+                <xs:annotation>
+                    <xs:documentation>Kein Vorzeichen, Einträge der Form '0' oder erste Ziffer ungleich '0'</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNullOhneFuehrNullBaseSType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="-?[1-9].*">
+                <xs:annotation>
+                    <xs:documentation>Vorzeichen '+' und Einträge der Form '0' oder '-0' nicht zugelassen, erste Ziffer ungleich '0'</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlOhneFuehrNullBaseSType">
+        <xs:restriction base="xs:integer">
+            <xs:pattern value="-?[1-9].*|0">
+                <xs:annotation>
+                    <xs:documentation>Vorzeichen '+' und Einträge der Form '-0' nicht zugelassen, erste Ziffer ungleich '0'</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlPosOhneFuehrNullBaseSType">
+        <xs:restriction base="xs:positiveInteger">
+            <xs:pattern value="[1-9].*">
+                <xs:annotation>
+                    <xs:documentation>Kein Vorzeichen, erste Ziffer ungleich '0'</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="StringBaseSType">
+        <xs:restriction base="StringZUBaseSType">
+            <xs:pattern value="[^&#xa;&#xd;]+">
+                <xs:annotation>
+                    <xs:documentation>Zeichensatz Standard_E_V2, Zeilenumbrüche verbieten und Leerangaben unterbinden</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="StringZUBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[&#xa;&#xd;&#x20;-&#x7e;&#xa1;-&#xa3;&#xa5;&#xa7;&#xaa;-&#xac;&#xae;-&#xb3;&#xb5;&#xb9;-&#xbb;&#xbf;-&#xff;&#x152;-&#x153;&#x160;-&#x161;&#x178;&#x17d;-&#x17e;&#x20ac;]+">
+                <xs:annotation>
+                    <xs:documentation>Zeichensatz Standard_E_V2, Zeilenumbrüche erlauben und Leerangaben unterbinden</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="BICBaseSType">
+        <xs:annotation>
+            <xs:documentation>BIC</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[a-zA-Z]{4}([a-zA-Z]{2})[0-9a-zA-Z]{2}([0-9a-zA-Z]{3})?"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DATUM_MMJJBaseSType">
+        <xs:annotation>
+            <xs:documentation>DATUM_MMJJ</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(01|02|03|04|05|06|07|08|09|10|11|12)\.[0-9]{2}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumJJJJBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9][0-9][0-9][1-9]|[0-9][0-9][1-9][0-9]|[0-9][1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])">
+                <xs:annotation>
+                    <xs:documentation>Art der Teilbekanntheit: BEKANNT</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumJJJJMMTTBekanntBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="([0-9][0-9][0-9][1-9]|[0-9][0-9][1-9][0-9]|[0-9][1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])(10|11|12|01|02|03|04|05|06|07|08|09)(0[1-9]|[1-2][0-9]|3[0-1])">
+                <xs:annotation>
+                    <xs:documentation>Art der Teilbekanntheit: BEKANNT</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumMMBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(10|11|12|01|02|03|04|05|06|07|08|09)">
+                <xs:annotation>
+                    <xs:documentation>Art der Teilbekanntheit: BEKANNT</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumTTMMBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(0[1-9]|[1-2][0-9]|3[0-1])(10|11|12|01|02|03|04|05|06|07|08|09)">
+                <xs:annotation>
+                    <xs:documentation>Art der Teilbekanntheit: BEKANNT</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DatumTTpMMpJJJJBekanntBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="(0[1-9]|[1-2][0-9]|3[0-1])\.(10|11|12|01|02|03|04|05|06|07|08|09)\.([0-9][0-9][0-9][1-9]|[0-9][0-9][1-9][0-9]|[0-9][1-9][0-9][0-9]|[1-9][0-9][0-9][0-9])">
+                <xs:annotation>
+                    <xs:documentation>Art der Teilbekanntheit: BEKANNT</xs:documentation>
+                </xs:annotation>
+            </xs:pattern>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DezimalzahlNichtNegOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType">
+        <xs:restriction base="DezimalzahlNichtNegOhneFuehrNullBaseSType">
+            <xs:maxLength value="15"/>
+            <xs:pattern value="\d{1,12}(,\d{2,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType">
+        <xs:restriction base="DezimalzahlNichtNegOhneFuehrNullBaseSType">
+            <xs:pattern value="\d{1,12}(,\d{2,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType">
+        <xs:restriction base="DezimalzahlOhneFuehrNullBaseSType">
+            <xs:maxLength value="15"/>
+            <xs:pattern value="-?\d{1,12}(,\d{2,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType">
+        <xs:restriction base="DezimalzahlOhneFuehrNullBaseSType">
+            <xs:pattern value="-?\d{1,12}(,\d{2,2})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Enum_INDEXFELD_PERSON_AB_1_BaseSType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="PersonA">
+                <xs:annotation>
+                    <xs:documentation>Steuerpflichtige Person / Ehemann / Person A</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="PersonB">
+                <xs:annotation>
+                    <xs:documentation>Ehefrau / Person B</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Enum_Religionsschluessel_ab_VZ_2014_3_BaseSType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="11">
+                <xs:annotation>
+                    <xs:documentation>nicht kirchensteuerpflichtig</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="03">
+                <xs:annotation>
+                    <xs:documentation>Römisch-katholisch</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="02">
+                <xs:annotation>
+                    <xs:documentation>Evangelisch</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="05">
+                <xs:annotation>
+                    <xs:documentation>Evangelisch-reformiert</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="20">
+                <xs:annotation>
+                    <xs:documentation>Evangelisch-reformierte Kirche Bückeburg</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="21">
+                <xs:annotation>
+                    <xs:documentation>Evangelisch-reformierte Kirche Stadthagen</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="07">
+                <xs:annotation>
+                    <xs:documentation>Französisch-reformiert</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="16">
+                <xs:annotation>
+                    <xs:documentation>Freie Religionsgemeinschaft Alzey</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="13">
+                <xs:annotation>
+                    <xs:documentation>Freireligiöse Landesgemeinde Baden</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="14">
+                <xs:annotation>
+                    <xs:documentation>Freireligiöse Landesgemeinde Pfalz</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="15">
+                <xs:annotation>
+                    <xs:documentation>Freireligiöse Gemeinde Mainz</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="17">
+                <xs:annotation>
+                    <xs:documentation>Freireligiöse Gemeinde Offenbach</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="25">
+                <xs:annotation>
+                    <xs:documentation>Israelitische Religionsgemeinschaft Baden</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="19">
+                <xs:annotation>
+                    <xs:documentation>Jüdische Gemeinden im Landesverband Hessen</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="26">
+                <xs:annotation>
+                    <xs:documentation>Landesverband der israelitischen Kultusgemeinden in Bayern</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="18">
+                <xs:annotation>
+                    <xs:documentation>Jüdische Gemeinde Frankfurt (Hessen)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="27">
+                <xs:annotation>
+                    <xs:documentation>Jüdische Kultusgemeinden Bad Kreuznach und Koblenz</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="28">
+                <xs:annotation>
+                    <xs:documentation>Israelitisch (Saarland)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="12">
+                <xs:annotation>
+                    <xs:documentation>Israelitische Religionsgemeinschaft Württemberg</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="29">
+                <xs:annotation>
+                    <xs:documentation>Nordrhein-Westfalen: Israelitisch (jüdisch)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="24">
+                <xs:annotation>
+                    <xs:documentation>Jüdische Gemeinde Hamburg</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="04">
+                <xs:annotation>
+                    <xs:documentation>Altkatholisch</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="10">
+                <xs:annotation>
+                    <xs:documentation>Sonstige</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Enum_VaSt_LStB_Besteuerungsgrund_E2600503_SType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation>nach Doppelbesteuerungsabkommen (DBA)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation>nach dem Auslandstätigkeitserlass (ATE)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation>aufgrund eines sonstigen zwischenstaatlichen Übereinkommens (ZÜ)</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Enum_VaSt_LStB_Gesamt_PersonA_E0200002_SType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation>1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation>2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation>3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation>4</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5">
+                <xs:annotation>
+                    <xs:documentation>5</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6">
+                <xs:annotation>
+                    <xs:documentation>6</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Enum_VaSt_LStB_Gesamt_PersonB_E0200002_SType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1">
+                <xs:annotation>
+                    <xs:documentation>1</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+                <xs:annotation>
+                    <xs:documentation>2</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+                <xs:annotation>
+                    <xs:documentation>3</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="4">
+                <xs:annotation>
+                    <xs:documentation>4</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="5">
+                <xs:annotation>
+                    <xs:documentation>5</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="6">
+                <xs:annotation>
+                    <xs:documentation>6</xs:documentation>
+                </xs:annotation>
+            </xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType">
+        <xs:restriction base="GanzzahlNichtNegOhneFuehrNullBaseSType">
+            <xs:totalDigits value="12"/>
+            <xs:pattern value=".{0,12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNegOhneFuehrNull_MaxVK12_SType">
+        <xs:restriction base="GanzzahlNichtNegOhneFuehrNullBaseSType">
+            <xs:totalDigits value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType">
+        <xs:restriction base="GanzzahlNichtNegOhneFuehrNullBaseSType">
+            <xs:totalDigits value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNegOhneFuehrNull_MaxVK6_SType">
+        <xs:restriction base="GanzzahlNichtNegOhneFuehrNullBaseSType">
+            <xs:totalDigits value="6"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlNichtNullOhneFuehrNull_MaxVK12_Muster1442570515_SType">
+        <xs:restriction base="GanzzahlNichtNullOhneFuehrNullBaseSType">
+            <xs:totalDigits value="12"/>
+            <xs:pattern value=".{0,12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType">
+        <xs:restriction base="GanzzahlOhneFuehrNullBaseSType">
+            <xs:totalDigits value="12"/>
+            <xs:pattern value=".{0,12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlOhneFuehrNull_MaxVK12_SType">
+        <xs:restriction base="GanzzahlOhneFuehrNullBaseSType">
+            <xs:totalDigits value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlOhneFuehrNull_MaxVK4_SType">
+        <xs:restriction base="GanzzahlOhneFuehrNullBaseSType">
+            <xs:totalDigits value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlOhneFuehrNull_MaxVK5_SType">
+        <xs:restriction base="GanzzahlOhneFuehrNullBaseSType">
+            <xs:totalDigits value="5"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlPosOhneFuehrNullSType">
+        <xs:restriction base="GanzzahlPosOhneFuehrNullBaseSType"/>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlPosOhneFuehrNull_MaxVK12_Muster1442570515_SType">
+        <xs:restriction base="GanzzahlPosOhneFuehrNullBaseSType">
+            <xs:totalDigits value="12"/>
+            <xs:pattern value=".{0,12}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlPosOhneFuehrNull_MaxVK2_MaxW12_SType">
+        <xs:restriction base="GanzzahlPosOhneFuehrNullBaseSType">
+            <xs:totalDigits value="2"/>
+            <xs:maxInclusive value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="GanzzahlPosOhneFuehrNull_MaxVK4_SType">
+        <xs:restriction base="GanzzahlPosOhneFuehrNullBaseSType">
+            <xs:totalDigits value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="IDNrBaseSType">
+        <xs:annotation>
+            <xs:documentation>IDNr</xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[0-9]{11}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="Ja1BaseSType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="1"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="JaXBaseSType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="X"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NAEnum_EINKOMMENS_ERSATZ_LEISTUNG_2_BaseSType">
+        <xs:restriction base="StringBaseSType">
+            <xs:annotation>
+                <xs:documentation>Arbeitslosengeld,Elterngeld,Insolvenzgeld,Krankengeld,Mutterschaftsgeld,Verdienstausfallentschädigung (Infektionsschutzgesetz)</xs:documentation>
+            </xs:annotation>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="NAEnum_KIRCHENSTEUER_4_BaseSType">
+        <xs:restriction base="StringBaseSType">
+            <xs:annotation>
+                <xs:documentation>Kirchensteuer laut Lohnsteuerbescheinigung Ehefrau / Person B,Kirchensteuer laut Lohnsteuerbescheinigung steuerpflichtige Person / Ehemann / Person A,Kirchensteuer-Nachzahlung,Kirchensteuer-Vorauszahlungen (ohne Kirchensteuer laut Lohnsteuerbescheinigungen),Kirchgeld</xs:documentation>
+            </xs:annotation>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL11_MaxL11_Muster91555_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="11"/>
+            <xs:maxLength value="11"/>
+            <xs:pattern value="\d+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL1_MaxL12_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="12"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL1_MaxL25_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="25"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL1_MaxL4_Musterm1643987249_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="4"/>
+            <xs:pattern value="[0-9]+"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL1_MaxL4_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="4"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL1_MaxL6_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="6"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL1_MaxL99999_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="99999"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL2_MaxL3_Muster169192601_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="2"/>
+            <xs:maxLength value="3"/>
+            <xs:pattern value="20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL5_MaxL34_Musterm188614856_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="5"/>
+            <xs:maxLength value="34"/>
+            <xs:pattern value="[a-zA-Z]{2}[0-9]{2}[0-9a-zA-Z]{1,30}"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="String_MinL5_MaxL5_Muster2084297628_SType">
+        <xs:restriction base="StringBaseSType">
+            <xs:minLength value="5"/>
+            <xs:maxLength value="5"/>
+            <xs:pattern value="([0]{1}[1-9]{1}[0-9]{3})|([1-9]{1}[0-9]{4})"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:element name="VAST_Vorberechnungen" type="VAST_Vorberechnungen_CType"/>
+    <xs:complexType name="VAST_Vorberechnungen_CType">
+        <xs:sequence>
+            <xs:element name="VaSt_GDB" type="VaSt_GDB_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_GDB_Gesamt" type="VaSt_GDB_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_KRV" type="VaSt_KRV_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_KRV_Gesamt" type="VaSt_KRV_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_LErsL" type="VaSt_LErsL_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_LStB" type="VaSt_LStB_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_LStB_Gesamt" type="VaSt_LStB_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_Pers1" type="VaSt_Pers1_m1444272599_CType" minOccurs="0" maxOccurs="2"/>
+            <xs:element name="VaSt_Pers1_Gesamt" type="VaSt_Pers1_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_Pers2" type="VaSt_Pers2_m1444272599_CType" minOccurs="0" maxOccurs="2"/>
+            <xs:element name="VaSt_Pers2_Gesamt" type="VaSt_Pers2_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_RBM" type="VaSt_RBM_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_RBM_Gesamt" type="VaSt_RBM_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_RIE" type="VaSt_RIE_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_RIE_Gesamt" type="VaSt_RIE_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_RUE" type="VaSt_RUE_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_RUE_Gesamt" type="VaSt_RUE_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_VWL" type="VaSt_VWL_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_VWL_Gesamt" type="VaSt_VWL_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_ZUS" type="VaSt_ZUS_m1444272599_CType" minOccurs="0" maxOccurs="500"/>
+            <xs:element name="VaSt_ZUS_Gesamt" type="VaSt_ZUS_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VaSt_Gesamt" type="VaSt_Gesamt_m1444272599_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+        <xs:attribute name="version" fixed="2024" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="VaSt_GDB_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="GradDerBehinderung" type="GradDerBehinderung_m953362119_CType" minOccurs="0" maxOccurs="10"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="GradDerBehinderung_m953362119_CType">
+        <xs:sequence>
+            <xs:element name="MaxGrad_Hilf_PersA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="MaxGrad_Hilf_PersB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_GDB_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_m98845365_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m98845365_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m98845365_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109101" type="DATUM_MMJJBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VonDat_Hilf" type="DatumJJJJMMTTBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VonDat_Monat_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK2_MaxW12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VonDat_Jahr_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VonDat_Jahr_Hilf_String" type="String_MinL1_MaxL4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109102" type="DATUM_MMJJBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>gültig bis</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BisDat_Hilf" type="DatumJJJJMMTTBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BisDat_Monat_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK2_MaxW12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BisDat_Jahr_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BisDat_Jahr_Hilf_String" type="String_MinL1_MaxL4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gültig von</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109103" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>unbefristet gültig</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109708" type="String_MinL2_MaxL3_Muster169192601_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Grad der Behinderung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109708_Hilf" type="GanzzahlPosOhneFuehrNullSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Grad der Behinderung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109706" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Merkmal „blind, taub hilflos“</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109707" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Merkmal „gehbehindert“</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109704" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Gewaehrt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m98845365_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109706" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Merkmal „blind, taub hilflos“</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109707" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Merkmal „gehbehindert“</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109704" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Gewaehrt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109101" type="DATUM_MMJJBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VonDat_Hilf" type="DatumJJJJMMTTBekanntBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VonDat_Monat_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK2_MaxW12_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VonDat_Jahr_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VonDat_Jahr_Hilf_String" type="String_MinL1_MaxL4_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0109102" type="DATUM_MMJJBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="BisDat_Hilf" type="DatumJJJJMMTTBekanntBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="BisDat_Monat_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK2_MaxW12_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="BisDat_Jahr_Hilf" type="GanzzahlPosOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="BisDat_Jahr_Hilf_String" type="String_MinL1_MaxL4_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0109103" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0109708" type="String_MinL2_MaxL3_Muster169192601_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0109708_Hilf" type="GanzzahlPosOhneFuehrNullSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_KRV_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="I_E0500406" type="IDNrBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0503110" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu Krankenversicherungen des Kindes (nur Basisabsicherung, keine Wahlleistungen)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0500107" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vorname</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0500701" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Geburtsdatum</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0503310" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zur sozialen Pflegeversicherung und / oder zur privaten Pflege-Pflichtversicherung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0503409" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Von den Versicherungen laut den Zeilen /Kind/KV_PV/AW_Stpfl/E0503110.Vordruckzeile und / oder /Kind/KV_PV/AW_Stpfl/E0503310.Vordruckzeile erstattete Beträge</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_KRV_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_1057711125_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_1057711125_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_1057711125_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002005" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002005_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002105_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001605" type="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001605_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001705" type="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001705_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002207_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002302" type="GanzzahlNichtNegOhneFuehrNull_MaxVK6_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002302_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003104" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003104_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003202" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003202_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003302" type="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003302_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_1057711125_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002005" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002005_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002105_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001605" type="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001605_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001705" type="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001705_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002207_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002302" type="GanzzahlNichtNegOhneFuehrNull_MaxVK6_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002302_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003104" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003104_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003202" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003202_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003302" type="GanzzahlNichtNegOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003302_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_LErsL_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Person A</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Person B</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Leistung" type="Leistung_m1980984564_CType" minOccurs="0" maxOccurs="11"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Leistung_m1980984564_CType">
+        <xs:sequence>
+            <xs:element name="E0104113" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0104110" type="NAEnum_EINKOMMENS_ERSATZ_LEISTUNG_2_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Art der Leistung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_LStB_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_1_5_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker LStB_1_5 Person A</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_1_5_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker LStB_1_5 Person B</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Klasse_1_5_Hilf" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hilfsfeld Klasse_1_5_Hilf</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_6_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker LStB_6 Person A</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_6_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker LStB_6 Person B</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Klasse_6_Hilf" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hilfsfeld Klasse_0_6_Hilf</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_DBAATE_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker DBAATE Person A</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_DBAATE_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker DBAATE Person B</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_Anrechnung_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Anrechnung_PersonA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_Anrechnung_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Anrechnung_PersonB</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_KurzArbGeld_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker KurzArbGeld_PersonA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_KurzArbGeld_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker KurzArbGeld_PersonB</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Besteuerungsgrund" type="Besteuerungsgrund_894137059_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Besteuerungsgrund_894137059_CType">
+        <xs:sequence>
+            <xs:element name="E0200204" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bruttoarbeitslohn</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2603501" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bruttoarbeitslohn laut Nr. 3 der Lohnsteuerbescheinigung(en)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200202" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bruttoarbeitslohn</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200304" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Lohnsteuer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200302" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Lohnsteuer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200404" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Solidaritätszuschlag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200504" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer des Arbeitnehmers</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200402" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Solidaritätszuschlag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200502" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer des Arbeitnehmers</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200604" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer für den Ehegatten / Lebenspartner (nur bei Konfessionsverschiedenheit)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200602" type="DezimalzahlOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer für den Ehegatten / Lebenspartner (nur bei Konfessionsverschiedenheit)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="KontextAngegeben_Gruppe_Anrechnung_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hilfsfeld zur Bestückung der Gruppe Anrechnung für Person A</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="KontextAngegeben_Gruppe_Anrechnung_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hilfsfeld zur Bestückung der Gruppe Anrechnung für Person B</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201802" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Lohnsteuer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201803" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Solidaritätszuschlag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201903" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer Arbeitnehmer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201904" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer Ehegatte / Lebenspartner</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0202605" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0202604" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bezeichnung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2603701" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerfreier Bruttoarbeitslohn laut Nr. 16 a / b der Lohnsteuerbescheinigung(en)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2600503" type="Enum_VaSt_LStB_Besteuerungsgrund_E2600503_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Im Kalenderjahr $VZ$ habe ich steuerfreien Arbeitslohn bezogen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VBez" type="VBez_m679707973_CType" minOccurs="0" maxOccurs="12"/>
+            <xs:element name="ErmStVBezMKalJahr" type="ErmStVBezMKalJahr_m679707973_CType" minOccurs="0" maxOccurs="12"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VBez_m679707973_CType">
+        <xs:sequence>
+            <xs:element name="Platz_LStB_VBez_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Versorgungsbezug_PersonA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_VBez_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Versorgungsbezug_PersonB</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200801" type="GanzzahlNichtNullOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerbegünstigte Versorgungsbezüge (im Bruttoarbeitslohn laut Zeile E0200201.Vordruckzeile enthalten)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201003" type="DatumMMBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bei unterjähriger Zahlung: Erster Monat, für den Versorgungsbezüge gezahlt wurden, laut Nr. 31 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201203" type="DatumMMBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bei unterjähriger Zahlung: Letzter Monat, für den Versorgungsbezüge gezahlt wurden, laut Nr. 31 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201307" type="DatumJJJJBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Maßgebendes Kalenderjahr des Versorgungsbeginns laut Nr. 30 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200902" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bemessungsgrundlage für den Versorgungsfreibetrag laut Nr. 29 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201205" type="GanzzahlNichtNullOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Sterbegeld, Kapitalauszahlungen / Abfindungen und Nachzahlungen von Versorgungsbezügen laut Nr. 32 der Lohnsteuerbescheinigung&#10;(in den Zeilen E0200202.Vordruckzeile und E0200801.Vordruckzeile enthalten)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ErmStVBezMKalJahr_m679707973_CType">
+        <xs:sequence>
+            <xs:element name="Platz_LStB_ErmStVBezMKalJahr_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Versorgungsbezug_PersonA</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_LStB_ErmStVBezMKalJahr_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker Versorgungsbezug_PersonB</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200901" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ermäßigt zu besteuernde Versorgungsbezüge für mehrere Jahre laut Nr. 9 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201307" type="DatumJJJJBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Maßgebendes Kalenderjahr des Versorgungsbeginns laut Nr. 30 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_LStB_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_m1651060639_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m1651060639_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m1651060639_CType">
+        <xs:sequence>
+            <xs:element name="GueltigAb_Max_Hilf" type="DatumTTMMBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Besteuerungsmerkmale gültig ab</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200002" type="Enum_VaSt_LStB_Gesamt_PersonA_E0200002_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerklasse</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000801" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitgeberanteil / -zuschuss laut Nr. 22 a / b der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000401" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmeranteil laut Nr. 23 a / b der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003705" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gesetzliche Krankenversicherung laut Nr. 24 a der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003807" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Private Krankenversicherung laut Nr. 24 b der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003907" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gesetzliche Pflegeversicherung laut Nr. 24 c der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001203" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmerbeiträge zu Krankenversicherungen laut Nr. 25 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001505" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmerbeiträge zu sozialen Pflegeversicherungen laut Nr. 26 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2004403" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmerbeiträge zur Arbeitslosenversicherung laut Nr. 27 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0205608" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vom Arbeitgeber steuerfrei ersetzt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0204103" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitgeberleistungen laut Nr. 17 der Lohnsteuerbescheinigung (steuerfrei ersetzt)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0203901" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitgeberleistungen laut Nr. 18 der Lohnsteuerbescheinigung (pauschal besteuert)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0205108" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vom Arbeitgeber steuerfrei ersetzt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0206303" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vom Arbeitgeber / von der Agentur für Arbeit insgesamt steuerfrei ersetzt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201305" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ermäßigt zu besteuernde Versorgungsbezüge für mehrere Jahre laut Nr. 9 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200804" type="GanzzahlNichtNullOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerbegünstigte Versorgungsbezüge (im Bruttoarbeitslohn laut Zeile E0200201.Vordruckzeile enthalten)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0108003" type="NAEnum_KIRCHENSTEUER_4_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Art der Leistung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0108004" type="DezimalzahlNichtNegOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>soweit diese nicht als Zuschlag zur Abgeltungsteuer einbehalten oder gezahlt wurde - Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201704" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bezeichnung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201705" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201804" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bezeichnung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201805" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m1651060639_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="GueltigAb_Max_Hilf" type="DatumTTMMBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Besteuerungsmerkmale gültig ab</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200002" type="Enum_VaSt_LStB_Gesamt_PersonB_E0200002_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerklasse</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000801" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitgeberanteil / -zuschuss laut Nr. 22 a / b der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000401" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmeranteil laut Nr. 23 a / b der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003705" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gesetzliche Krankenversicherung laut Nr. 24 a der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003807" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Private Krankenversicherung laut Nr. 24 b der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003907" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Gesetzliche Pflegeversicherung laut Nr. 24 c der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001203" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmerbeiträge zu Krankenversicherungen laut Nr. 25 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001505" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmerbeiträge zu sozialen Pflegeversicherungen laut Nr. 26 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2004403" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmerbeiträge zur Arbeitslosenversicherung laut Nr. 27 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0205608" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vom Arbeitgeber steuerfrei ersetzt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0204103" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitgeberleistungen laut Nr. 17 der Lohnsteuerbescheinigung (steuerfrei ersetzt)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0203901" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Arbeitgeberleistungen laut Nr. 18 der Lohnsteuerbescheinigung (pauschal besteuert)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0205108" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vom Arbeitgeber steuerfrei ersetzt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0206303" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vom Arbeitgeber / von der Agentur für Arbeit insgesamt steuerfrei ersetzt</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201305" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ermäßigt zu besteuernde Versorgungsbezüge für mehrere Jahre laut Nr. 9 der Lohnsteuerbescheinigung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0200804" type="GanzzahlNichtNullOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerbegünstigte Versorgungsbezüge (im Bruttoarbeitslohn laut Zeile E0200201.Vordruckzeile enthalten)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0108003" type="NAEnum_KIRCHENSTEUER_4_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Art der Leistung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0108004" type="DezimalzahlNichtNegOhneFuehrNull_MaxL15_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>soweit diese nicht als Zuschlag zur Abgeltungsteuer einbehalten oder gezahlt wurde - Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201704" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bezeichnung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201705" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201804" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bezeichnung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0201805" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_Pers1_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Inhaber" type="Inhaber_m1836916125_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Inhaber_m1836916125_CType">
+        <xs:sequence>
+            <xs:element name="NatPers" type="NatPers_m1519714926_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="NatPers_m1519714926_CType">
+        <xs:sequence>
+            <xs:element name="E0100301_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vorname</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100801_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vorname</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100201_unbegrenzt" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100201_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100901_unbegrenzt" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100901_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Name</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100401_Merk" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Geburtsdatum</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101001_Merk" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Geburtsdatum</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AdrKette" type="AdrKette_m1902758467_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="BankKonto" type="BankKonto_m1902758467_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AdrKette_m1902758467_CType">
+        <xs:sequence>
+            <xs:element name="E0100602_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Wohnort</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100602_Hilf" type="String_MinL1_MaxL99999_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Wohnort</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="StrAdr" type="StrAdr_m1508268073_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="AuslAdr" type="AuslAdr_m1508268073_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="StrAdr_m1508268073_CType">
+        <xs:sequence>
+            <xs:element name="E0101104_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Straße (derzeitige Adresse)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101206_Merk" type="String_MinL1_MaxL4_Musterm1643987249_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hausnummer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101207_Merk" type="String_MinL1_MaxL6_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hausnummerzusatz</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101301_Merk" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Adressergänzung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100601_Merk" type="String_MinL5_MaxL5_Muster2084297628_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Postleitzahl (Inland)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="AuslAdr_m1508268073_CType">
+        <xs:sequence>
+            <xs:element name="E0101405_Merk" type="String_MinL1_MaxL12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Postleitzahl (Ausland)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BankKonto_m1902758467_CType">
+        <xs:sequence>
+            <xs:element name="E0102102_Merk" type="String_MinL5_MaxL34_Musterm188614856_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>IBAN (inländisches Geldinstitut)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101601_Merk" type="JaXBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerpflichtige Person / Ehemann / Person A</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0102603_Merk" type="String_MinL5_MaxL34_Musterm188614856_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>IBAN (ausländisches Geldinstitut)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0102201_Merk" type="BICBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>BIC zur IBAN des ausländischen Geldinstituts</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_Pers1_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_m678760223_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m678760223_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m678760223_CType">
+        <xs:sequence>
+            <xs:element name="E0100401" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0100301" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vorname</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100201" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0101405" type="String_MinL1_MaxL12_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0100602" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0101104" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0101206" type="String_MinL1_MaxL4_Musterm1643987249_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0101207" type="String_MinL1_MaxL6_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0101301" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0100601" type="String_MinL5_MaxL5_Muster2084297628_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Bankverbindung" type="Bankverbindung_m2116575765_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Bankverbindung_m2116575765_CType">
+        <xs:sequence>
+            <xs:element name="E0102102" type="String_MinL5_MaxL34_Musterm188614856_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0101601" type="JaXBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0102603" type="String_MinL5_MaxL34_Musterm188614856_SType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0102201" type="BICBaseSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m678760223_CType">
+        <xs:sequence>
+            <xs:element name="E0101001" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E0100801" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Vorname</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100901" type="String_MinL1_MaxL25_SType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_Pers2_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0100402_Merk" type="Enum_Religionsschluessel_ab_VZ_2014_3_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Religion (Person A)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101002_Merk" type="Enum_Religionsschluessel_ab_VZ_2014_3_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Religion (Person B)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_Pers2_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="E0100402" type="Enum_Religionsschluessel_ab_VZ_2014_3_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Religion (Person A)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0101002" type="Enum_Religionsschluessel_ab_VZ_2014_3_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Religion (Person B)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_RBM_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Mitteilung" type="Mitteilung_m953035999_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Mitteilung_m953035999_CType">
+        <xs:sequence>
+            <xs:element name="Leistung" type="Leistung_1995212577_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="Vorzeitraum" type="Vorzeitraum_1995212577_CType" minOccurs="0" maxOccurs="30"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Leistung_1995212577_CType">
+        <xs:sequence>
+            <xs:element name="Teilleistung" type="Teilleistung_1279808038_CType" minOccurs="0" maxOccurs="55"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Teilleistung_1279808038_CType">
+        <xs:sequence>
+            <xs:element name="Platz_PersonA_gesetzlich" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonB_gesetzlich" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800301" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Rentenbetrag&#10;(einschließlich Einmalzahlung und Leistungen)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800606" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Rentenanpassungsbetrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800501" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800806" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der 1. vorhergehenden Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800906" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ende der 1. vorhergehenden Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800811" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der 2. vorhergehenden Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800911" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ende der 2. vorhergehenden Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800821" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der 3. vorhergehenden Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800921" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ende der 3. vorhergehenden Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1800601" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Nachzahlungen für mehrere vorangegangene Jahre / Kapitalauszahlung (in Zeile E1800301.Vordruckzeile enthalten)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonA_privat" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonB_privat" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1801601" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Rentenbetrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1801701" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1801706" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Geburtsdatum einer anderen Person, von deren Lebenszeit die Laufzeit der Rente (auch) abhängt; bei Garantiezeitrenten das Geburtsdatum der verstorbenen versicherten Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1801901" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Die Rente erlischt / wird umgewandelt spätestens am</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1802001" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Nachzahlungen für mehrere vorangegangene Jahre (in Zeile E1801601.Vordruckzeile enthalten)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonA_betriebl" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Platz_PersonB_betriebl" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Platz Merker</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803101" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Leistungen aus einem Altersvorsorgevertrag, einem Pensionsfonds, einer Pensionskasse oder aus einer Direktversicherung laut Nummer 1 der Leistungsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803201" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Leistungen aus einem Pensionsfonds laut Nummer 2 der Leistungsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803605" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Leistungen zur Abfindung einer Kleinbetragsrente laut Nummer 3 der Leistungsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803301" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Leistungen aus einer betrieblichen Altersversorgung laut Nummer 4 der Leistungsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803806" type="GanzzahlNichtNegOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>In Zeile E1803301.Vordruckzeile enthaltener Rentenanpassungsbetrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803401" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der Leistung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803805" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der vorhergehenden Leistung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803905" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Ende der vorhergehenden Leistung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803501" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Leibrente aus einem Altersvorsorgevertrag oder aus einer betrieblichen Altersversorgung laut Nummer 5 oder Leistungen wegen schädlicher Verwendung laut Nummer 9a der Leistungsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803601" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1804005" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Geburtsdatum einer anderen Person, von deren Lebenszeit die Laufzeit der Rente (auch) abhängt; bei Garantiezeitrenten das Geburtsdatum der verstorbenen versicherten Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803701" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Abgekürzte Leibrente aus einem Altersvorsorgevertrag oder aus einer betrieblichen Altersversorgung laut Nummer 6 oder Leistungen wegen schädlicher Verwendung laut Nummer 9b der Leistungsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803801" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beginn der Rente</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803901" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Die Rente erlischt / wird umgewandelt spätestens am</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1804001" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Andere Leistungen laut den Nummern 7, 8 und 10 oder Leistungen wegen schädlicher Verwendung laut den Nummern 9c und 9d der Leistungsmitteilung oder der Auflösungsbetrag bei Aufgabe der Selbstnutzung oder der Reinvestitionsabsicht vor dem Beginn der Auszahlungsphase oder der Verminderungsbetrag laut Bescheid der Zentralen Zulagenstelle für Altersvermögen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1804505" type="GanzzahlPosOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Auflösungsbetrag bei Wahl der Einmalbesteuerung des Wohnförderkontos laut Bescheid der Zentralen Zulagenstelle für Altersvermögen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1804601" type="GanzzahlPosOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Auflösungsbetrag bei Aufgabe der Selbstnutzung oder der Reinvestitionsabsicht nach dem Beginn der Auszahlungsphase laut Bescheid der Zentralen Zulagenstelle für Altersvermögen</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1804801" type="DatumTTpMMpJJJJBekanntBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zeitpunkt der Aufgabe der Selbstnutzung oder Reinvestitionsabsicht</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1804701" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Nachzahlungen für mehrere vorangegangene Jahre (laut Nummer 11 der Leistungsmitteilung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="VersFB" type="VersFB_m750338795_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VersFB_m750338795_CType">
+        <xs:sequence>
+            <xs:element name="E1803303" type="GanzzahlOhneFuehrNull_MaxVK12_Muster1442570515_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bemessungsgrundlage für den Versorgungsfreibetrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803409" type="DatumJJJJBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Maßgebendes Kalenderjahr des Versorgungsbeginns</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803509" type="DatumMMBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bei unterjähriger Zahlung: Erster Monat, für den Versorgungsbezüge gezahlt wurden</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E1803510" type="DatumMMBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Bei unterjähriger Zahlung: Letzter Monat, für den Versorgungsbezüge gezahlt wurden</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="Vorzeitraum_1995212577_CType">
+        <xs:sequence>
+            <xs:element name="VZ1_Hilf_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VZ2_Hilf_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VZ3_Hilf_PersonA" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VZ1_Hilf_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VZ2_Hilf_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="VZ3_Hilf_PersonB" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_RBM_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_m699576733_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m699576733_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m699576733_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0141803" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerabzugsbeträge nach § 50a Abs. 7 EStG laut Rentenbezugsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0141907" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Solidaritätszuschlag zu Zeile E0141803.Vordruckzeile</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu Krankenversicherungen&#10;– ohne Beiträge, die in Zeile E2001203.Vordruckzeile geltend gemacht werden –&#10;(z. B. bei Rentnern, bei freiwillig gesetzlich versicherten Selbstzahlern)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002105_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu sozialen Pflegeversicherungen&#10;– ohne Beiträge, die in Zeile E2001505.Vordruckzeile geltend gemacht werden –&#10;(z. B. bei Rentnern, bei freiwillig gesetzlich versicherten Selbstzahlern)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002207_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Von der Kranken- und / oder sozialen Pflegeversicherung erstattete Beiträge</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2003104_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2002402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss zu den Beiträgen laut den Zeilen E2001805.Vordruckzeile und / oder E2002105.Vordruckzeile&#10;– ohne Beträge laut den Zeilen E2003705.Vordruckzeile und E2003907.Vordruckzeile –&#10;(z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss von dritter Seite zu den Beiträgen laut den Zeilen E2003104.Vordruckzeile und / oder E2003202.Vordruckzeile (z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m699576733_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0141803" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Steuerabzugsbeträge nach § 50a Abs. 7 EStG laut Rentenbezugsmitteilung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0141907" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Solidaritätszuschlag zu Zeile E0141803.Vordruckzeile</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu Krankenversicherungen&#10;– ohne Beiträge, die in Zeile E2001203.Vordruckzeile geltend gemacht werden –&#10;(z. B. bei Rentnern, bei freiwillig gesetzlich versicherten Selbstzahlern)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002105_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu sozialen Pflegeversicherungen&#10;– ohne Beiträge, die in Zeile E2001505.Vordruckzeile geltend gemacht werden –&#10;(z. B. bei Rentnern, bei freiwillig gesetzlich versicherten Selbstzahlern)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002207_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Von der Kranken- und / oder sozialen Pflegeversicherung erstattete Beiträge</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss zu den Beiträgen laut den Zeilen E2001805.Vordruckzeile und / oder E2002105.Vordruckzeile&#10;– ohne Beträge laut den Zeilen E2003705.Vordruckzeile und E2003907.Vordruckzeile –&#10;(z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss von dritter Seite zu den Beiträgen laut den Zeilen E2003104.Vordruckzeile und / oder E2003202.Vordruckzeile (z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2003104_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_RIE_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_RIE_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_m500437452_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m500437452_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m500437452_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003815" type="String_MinL11_MaxL11_Muster91555_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Mitgliedsnummer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003901" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld: Ich bin für das Jahr $VZ$ unmittelbar begünstigt.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m500437452_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003815" type="String_MinL11_MaxL11_Muster91555_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Mitgliedsnummer</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003901" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld: Ich bin für das Jahr $VZ$ unmittelbar begünstigt.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_RUE_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_RUE_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_1436367784_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_1436367784_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_1436367784_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000701_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_1436367784_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000701_Ungeprueft" type="DezimalzahlNichtNegOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_VWL_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_VWL_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="E0100002" type="JaXBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Ja-Feld (= „X“)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="PersonA" type="PersonA_m1616776719_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m1616776719_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m1616776719_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109109" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld: Ja-Feld (= „1“)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m1616776719_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E0109109" type="Ja1BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld: Ja-Feld (= „1“)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_ZUS_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_ZUS_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="PersonA" type="PersonA_411100094_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_411100094_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_411100094_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000701_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000703" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000401_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2000701_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2001805_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2002105_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2003104_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2003202_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_411100094_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000701_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag (Ungeprüft)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000703" type="GanzzahlOhneFuehrNull_MaxVK12_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402_Ungeprueft" type="DezimalzahlOhneFuehrNull_MaxVK12_MinNK2_MaxNK2_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000401_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2000701_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2001805_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2002105_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2003104_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="E2003202_angegeben" type="Ja1BaseSType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="VaSt_Gesamt_m1444272599_CType">
+        <xs:sequence>
+            <xs:element name="E0100001" type="JaXBaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Einkommensteuererklärung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="PersonA" type="PersonA_m128497915_CType" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="PersonB" type="PersonB_m128497915_CType" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonA_m128497915_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000701" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss zu den Beiträgen laut den Zeilen E2001805.Vordruckzeile und / oder E2002105.Vordruckzeile&#10;– ohne Beträge laut den Zeilen E2003705.Vordruckzeile und E2003907.Vordruckzeile –&#10;(z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss von dritter Seite zu den Beiträgen laut den Zeilen E2003104.Vordruckzeile und / oder E2003202.Vordruckzeile (z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu Krankenversicherungen&#10;– ohne Beiträge, die in Zeile E2001203.Vordruckzeile geltend gemacht werden –&#10;(z. B. bei Rentnern, bei freiwillig gesetzlich versicherten Selbstzahlern)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002105" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002207" type="GanzzahlNichtNegOhneFuehrNull_MaxVK6_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonB_m128497915_CType">
+        <xs:sequence>
+            <xs:element name="I_Person" type="Enum_INDEXFELD_PERSON_AB_1_BaseSType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>I_Person</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2000701" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002402" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss zu den Beiträgen laut den Zeilen E2001805.Vordruckzeile und / oder E2002105.Vordruckzeile&#10;– ohne Beträge laut den Zeilen E2003705.Vordruckzeile und E2003907.Vordruckzeile –&#10;(z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2003402" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zuschuss von dritter Seite zu den Beiträgen laut den Zeilen E2003104.Vordruckzeile und / oder E2003202.Vordruckzeile (z. B. von der Deutschen Rentenversicherung)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2001805" type="GanzzahlOhneFuehrNull_MaxVK5_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Beiträge zu Krankenversicherungen&#10;– ohne Beiträge, die in Zeile E2001203.Vordruckzeile geltend gemacht werden –&#10;(z. B. bei Rentnern, bei freiwillig gesetzlich versicherten Selbstzahlern)</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002105" type="GanzzahlOhneFuehrNull_MaxVK4_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="E2002207" type="GanzzahlNichtNegOhneFuehrNull_MaxVK6_SType" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Zielfeld Betrag</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

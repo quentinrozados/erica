@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Elster xmlns="http://www.elster.de/elsterxml/schema/v11">
+    <TransferHeader version="11">
+        <Verfahren>ElsterAnmeldung</Verfahren>
+        <DatenArt>UENSTAnmeldungBE</DatenArt>
+        <Vorgang>send-Auth</Vorgang>
+        <Testmerker>700000004</Testmerker>
+        <HerstellerID>74931<!-- Bitte durch die eigene Hersteller-ID ersetzen --></HerstellerID>
+        <DatenLieferant>ERiC Entwicklung</DatenLieferant>
+        <Datei>
+            <Verschluesselung>CMSEncryptedData</Verschluesselung>
+            <Kompression>GZIP</Kompression>    
+            <TransportSchluessel/>
+        </Datei>
+    </TransferHeader>
+    <DatenTeil>
+        <Nutzdatenblock>
+            <NutzdatenHeader version="11">
+                <NutzdatenTicket>adfjasldkfuweor456asvs</NutzdatenTicket>
+                <Empfaenger id="F">1133</Empfaenger>
+                <Hersteller>
+                    <ProduktName>ERICTest</ProduktName>
+                    <ProduktVersion>2009.1/0</ProduktVersion>
+                </Hersteller>
+                <DatenLieferant>Softwaretester ERiC</DatenLieferant>
+            </NutzdatenHeader>
+            <Nutzdaten>
+                <UENSTAnmeldungBE xmlns="http://finkonsens.de/elster/elsteranmeldung/uenstanmeldungbe/v3" version="3">
+                    <UENSTAnmeldungBE>
+                        <Finanzamt>1133</Finanzamt>
+                        <Anmeldezeitraum>
+                            <Anm_Jahr>2023</Anm_Jahr>
+                            <Anm_Monat>01</Anm_Monat>
+                            <Anm_Art>11</Anm_Art>
+                        </Anmeldezeitraum>
+                        <Beherbergungsbetrieb>
+                            <NichtNurNatuerlichePerson>
+                                <AnredeId>3</AnredeId>
+                                <Firmenname>Firma</Firmenname>
+                                <Inlandsadresse>
+                                    <Str>Musterstraße</Str>
+                                    <HausNr>0</HausNr>
+                                    <Plz>12345</Plz>
+                                    <Ort>Musterort</Ort>
+                                </Inlandsadresse>
+                            </NichtNurNatuerlichePerson>
+                        </Beherbergungsbetrieb>
+                        <BMG>
+                            <BMG_Name>Name</BMG_Name>
+                            <BMG_Anschrift>Anschrift</BMG_Anschrift>
+							<BMG_Summe_UE_mit_Aufwand_5>14000.00</BMG_Summe_UE_mit_Aufwand_5>
+							<BMG_Anzahl_UE_mit_Aufwand_5>20</BMG_Anzahl_UE_mit_Aufwand_5>
+                            <BMG_Anzahl_stpfl_UE_gesamt>20</BMG_Anzahl_stpfl_UE_gesamt>
+                            <BMG_Anzahl_UE_berufl>70</BMG_Anzahl_UE_berufl>
+                            <BMG_Gesamtzahl_UE>90</BMG_Gesamtzahl_UE>
+                        </BMG>
+						<Berechnung_UENST>
+							<Berechnung_Par4_Abs1>
+								<Summe_BMG_Par4_Abs1_5>14000.00</Summe_BMG_Par4_Abs1_5>
+								<ZwSumme_Par4_Abs1>
+									<Summe_BMGxSteuersatz_Par4_Abs1_5>700.00</Summe_BMGxSteuersatz_Par4_Abs1_5>
+								</ZwSumme_Par4_Abs1>
+							</Berechnung_Par4_Abs1>
+							<Summe_UENST>
+								<Zu_entrichtende_UENST>700.00</Zu_entrichtende_UENST>
+							</Summe_UENST>
+						</Berechnung_UENST>
+                        <Stat_Anzahl_UE>
+                            <Stat_Anzahl_stpfl_UE>20</Stat_Anzahl_stpfl_UE>
+                            <Stat_Anzahl_berufl_UE>70</Stat_Anzahl_berufl_UE>
+                            <Stat_Gesamtzahl_UE>90</Stat_Gesamtzahl_UE>
+                        </Stat_Anzahl_UE>
+                        <SonstigeAngaben>
+                            <Mitwirkung>2</Mitwirkung>
+                        </SonstigeAngaben>
+                    </UENSTAnmeldungBE>
+                </UENSTAnmeldungBE>
+            </Nutzdaten>
+        </Nutzdatenblock>
+    </DatenTeil>
+</Elster>

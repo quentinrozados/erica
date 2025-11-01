@@ -1,0 +1,8 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:vAST_Vorberechnungen="http://finkonsens.de/elster/elstervast/vast_vorberechnungen/v2024" elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:import namespace="http://finkonsens.de/elster/elstervast/vast_vorberechnungen/v2024" schemaLocation="VAST_Vorberechnungen-2024.xsd"/>
+    <xs:complexType name="NutzdatenCType">
+        <xs:sequence>
+            <xs:element ref="vAST_Vorberechnungen:VAST_Vorberechnungen"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

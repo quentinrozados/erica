@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://finkonsens.de/lavendel/datenuebermittler/datenuebermittlerwechselrequest/v2" 
+xmlns:ct="http://finkonsens.de/lavendel/datenuebermittler/types/complex/v2" 
+xmlns:st="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2" 
+targetNamespace="http://finkonsens.de/lavendel/datenuebermittler/datenuebermittlerwechselrequest/v2" 
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified">
+	<xs:import namespace="http://finkonsens.de/lavendel/datenuebermittler/types/complex/v2" schemaLocation="./ComplexTypes-v2.xsd"/>
+	<xs:import namespace="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2" schemaLocation="./SimpleTypes-v2.xsd"/>
+	<xs:element name="DatenuebermittlerWechselRequest">
+		<xs:annotation>
+			<xs:documentation>Wechsel des Datenübermittlers für die angegebenen
+				Arbeitnehmer.
+			</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Grunddaten eines Arbeitgebers.</xs:documentation>
+			</xs:annotation>
+			<xs:sequence maxOccurs="unbounded">
+				<xs:element name="ArbeitnehmerUm" type="ct:ArbeitnehmerUmmeldenComplex">
+					<xs:annotation>
+						<xs:documentation>Grunddaten eines Arbeitnehmers.
+						</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="stnrAG" type="st:StNrSimple" use="required">
+				<xs:annotation>
+					<xs:documentation>Steuernummer der lohnsteuerlichen Betriebsstätte
+des Arbeitgebers.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="refDatumAG" type="st:DatumSimple" use="required">
+				<xs:annotation>
+					<xs:documentation>Referenzdatum des Arbeitgebers, ab dem ELStAM geliefert werden sollen. Einschränkungen ergeben sich aus der
+Schnittstellenbeschreibung ELStAM/ZK. Angabe in der Form JJJJMMTT.</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

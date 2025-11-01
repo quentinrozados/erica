@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Elster xmlns="http://www.elster.de/elsterxml/schema/v11">
+    <TransferHeader version="11">
+        <Verfahren>ElsterNachricht</Verfahren>
+        <DatenArt>Aufzeichnung146a</DatenArt>
+        <Vorgang>send-Auth</Vorgang>
+        <Testmerker>700000001</Testmerker>
+        <SigUser>
+            <Sig/>
+        </SigUser>
+        <Empfaenger id="L">
+            <Ziel>BY</Ziel>
+        </Empfaenger>
+        <HerstellerID>74931<!-- Bitte durch die eigene Hersteller-ID ersetzen --></HerstellerID>
+        <DatenLieferant>ERiC Beispiel Aufzeichung146a</DatenLieferant>
+        <Datei>
+            <Verschluesselung>CMSEncryptedData</Verschluesselung>
+            <Kompression>GZIP</Kompression>
+        </Datei>
+    </TransferHeader>
+    <DatenTeil>
+        <Nutzdatenblock>
+            <NutzdatenHeader version="11">
+                <NutzdatenTicket>1</NutzdatenTicket>
+                <Empfaenger id="F">9198</Empfaenger>
+            </NutzdatenHeader>
+            <Nutzdaten>
+                <Aufzeichnung146a xmlns="http://finkonsens.de/elster/elsternachricht/aufzeichnung146a/v1"
+                                  version="1">
+                    <Aufzeichnung146a>
+                        <StNr>2893081508152</StNr>
+                        <AllgAngaben>
+                            <NatuerlichePerson>
+                                <IdNr>45231891707</IdNr>
+                                <Anrede>1</Anrede>
+                                <Name>Baier</Name>
+                                <Vorname>Albert</Vorname>
+                                <Geburtsdatum>01.01.2000</Geburtsdatum>
+                            </NatuerlichePerson>
+                            <Adresse>
+                                <AdrInl>
+                                    <Strasse>Testsstraße</Strasse>
+                                    <Hausnummer>1</Hausnummer>
+                                    <Postleitzahl>12345</Postleitzahl>
+                                    <Ort>Musterhausen</Ort>
+                                </AdrInl>
+                            </Adresse>
+                        </AllgAngaben>
+                        <AngabenZuBetriebsstaette>
+                            <AnzahlAufzeichnungssysteme>1</AnzahlAufzeichnungssysteme>
+                            <Adresse>
+                                <Strasse>Teststraße</Strasse>
+                                <Hausnummer>1</Hausnummer>
+                                <Postleitzahl>12345</Postleitzahl>
+                                <Ort>Testort</Ort>
+                            </Adresse>
+                        </AngabenZuBetriebsstaette>
+                        <AngabenAufzeichnungssystem>
+                            <Art>1</Art>
+                            <Software>Windows</Software>
+                            <SeriennummerAS>1234567</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>v1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>31.12.2021</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                        </AngabenAufzeichnungssystem>
+                    </Aufzeichnung146a>
+                </Aufzeichnung146a>
+            </Nutzdaten>
+        </Nutzdatenblock>
+        <Nutzdatenblock>
+            <NutzdatenHeader version="11">
+                <NutzdatenTicket>2</NutzdatenTicket>
+                <Empfaenger id="F">9198</Empfaenger>
+            </NutzdatenHeader>
+            <Nutzdaten>
+                <Aufzeichnung146a xmlns="http://finkonsens.de/elster/elsternachricht/aufzeichnung146a/v1"
+                                  version="1">
+                    <Aufzeichnung146a>
+                        <StNr>2893081508152</StNr>
+                        <UStIdNr>DE222222220</UStIdNr>
+                        <AllgAngaben>
+                            <NichtNatuerlichePerson>
+                                <Firmenname>A-GmnH</Firmenname>
+                                <Rechtsform>35</Rechtsform>
+                            </NichtNatuerlichePerson>
+                            <Adresse>
+                                <AdresseInternet>
+                                    <InternetAdresse>www.A-GmbH.de</InternetAdresse>
+                                </AdresseInternet>
+                                <AdrAusl>
+                                    <Strasse>Straße</Strasse>
+                                    <Hausnummer>11</Hausnummer>
+                                    <Hausnummernzusatz>a</Hausnummernzusatz>
+                                    <Anschriftenzusatz>unten</Anschriftenzusatz>
+                                    <Postleitzahl>12345</Postleitzahl>
+                                    <Ort>A-Hausen</Ort>
+                                    <Land>US</Land>
+                                </AdrAusl>
+                            </Adresse>
+                        </AllgAngaben>
+                        <AngabenZuBetriebsstaette>
+                            <BezeichnungBetriebsstaette>Testbetriebsstätte, Kennzeichen: TES-TE-123</BezeichnungBetriebsstaette>
+                            <AnzahlAufzeichnungssysteme>4</AnzahlAufzeichnungssysteme>
+                            <Bemerkungen>Bemerkung 1</Bemerkungen>
+                            <Adresse>
+                                <Strasse>Teststraße</Strasse>
+                                <Hausnummer>1</Hausnummer>
+                                <Hausnummernzusatz>a</Hausnummernzusatz>
+                                <Anschriftenzusatz>1. OG</Anschriftenzusatz>
+                                <Postleitzahl>11111</Postleitzahl>
+                                <Ort>Testingen</Ort>
+                            </Adresse>
+                        </AngabenZuBetriebsstaette>
+                        <AngabenAufzeichnungssystem>
+                            <Art>1</Art>
+                            <Software>Windows</Software>
+                            <SoftwareVersion>1a</SoftwareVersion>
+                            <SeriennummerAS>1234567</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>v1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <ArtTSE>2</ArtTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>31.12.2021</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                            <AusserbetriebnahmeAS>01.02.2022</AusserbetriebnahmeAS>
+                            <Bemerkungen>keine Bemerkungen</Bemerkungen>
+                        </AngabenAufzeichnungssystem>
+                        <AngabenAufzeichnungssystem>
+                            <Art>2</Art>
+                            <Software>Windows</Software>
+                            <SeriennummerAS>1234</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>01.01.2022</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                            <AusserbetriebnahmeAS>01.01.2022</AusserbetriebnahmeAS>
+                        </AngabenAufzeichnungssystem>
+                        <AngabenAufzeichnungssystem>
+                            <Art>3</Art>
+                            <Software>Windows</Software>
+                            <SeriennummerAS>12345</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>01.01.2022</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                        </AngabenAufzeichnungssystem>
+                        <AngabenAufzeichnungssystem>
+                            <Art>1</Art>
+                            <Software>Windows</Software>
+                            <SeriennummerAS>123456</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>01.01.2022</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                        </AngabenAufzeichnungssystem>
+                        <AngabenAufzeichnungssystem>
+                            <Art>1</Art>
+                            <Software>Windows</Software>
+                            <SeriennummerAS>1234566</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>01.01.2022</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                        </AngabenAufzeichnungssystem>
+                        <AngabenAufzeichnungssystem>
+                            <Art>5</Art>
+                            <Software>Windows</Software>
+                            <SeriennummerAS>12345678</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0482-2023</BSIID>
+                            <AnschaffungAS>01.01.2022</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                            <Bemerkungen>123</Bemerkungen>
+                        </AngabenAufzeichnungssystem>
+                    </Aufzeichnung146a>
+                </Aufzeichnung146a>
+            </Nutzdaten>
+        </Nutzdatenblock>
+        <Nutzdatenblock>
+            <NutzdatenHeader version="11">
+                <NutzdatenTicket>3</NutzdatenTicket>
+                <Empfaenger id="F">9198</Empfaenger>
+            </NutzdatenHeader>
+            <Nutzdaten>
+                <Aufzeichnung146a xmlns="http://finkonsens.de/elster/elsternachricht/aufzeichnung146a/v1"
+                                  version="1">
+                    <Aufzeichnung146a>
+                        <StNr>2893081508152</StNr>
+                        <UStIdNr>DE111111117</UStIdNr>
+                        <AllgAngaben>
+                            <NatuerlichePerson>
+                                <IdNr>45231891707</IdNr>
+                                <Anrede>1</Anrede>
+                                <Name>Baier</Name>
+                                <Vorname>Albert</Vorname>
+                                <Namensvorsatz>von</Namensvorsatz>
+                                <Namenszusatz>und</Namenszusatz>
+                                <Titel>zu</Titel>
+                                <Geburtsdatum>01.01.2000</Geburtsdatum>
+                            </NatuerlichePerson>
+                            <Adresse>
+                                <AdresseInternet>
+                                    <InternetAdresse>www.baier.de</InternetAdresse>
+                                </AdresseInternet>
+                                <AdrInl>
+                                    <Strasse>Musterstrasse</Strasse>
+                                    <Hausnummer>1</Hausnummer>
+                                    <Hausnummernzusatz>a</Hausnummernzusatz>
+                                    <Anschriftenzusatz>rechtes OG</Anschriftenzusatz>
+                                    <Postleitzahl>12345</Postleitzahl>
+                                    <Ort>Musterhausen</Ort>
+                                </AdrInl>
+                            </Adresse>
+                        </AllgAngaben>
+                        <AngabenZuBetriebsstaette>
+                            <AnzahlAufzeichnungssysteme>1</AnzahlAufzeichnungssysteme>
+                            <Bemerkungen>Hier könnte Ihre Bemerkung stehen.</Bemerkungen>
+                            <Adresse>
+                                <Strasse>Testgasse</Strasse>
+                                <Hausnummer>1</Hausnummer>
+                                <Hausnummernzusatz>a</Hausnummernzusatz>
+                                <Anschriftenzusatz>1. OG</Anschriftenzusatz>
+                                <Postleitzahl>11111</Postleitzahl>
+                                <Ort>Testort</Ort>
+                            </Adresse>
+                        </AngabenZuBetriebsstaette>
+                        <AngabenAufzeichnungssystem>
+                            <Art>3</Art>
+                            <Software>Windows</Software>
+                            <SoftwareVersion>asasaw</SoftwareVersion>
+                            <SeriennummerAS>1234567</SeriennummerAS>
+                            <Hersteller>ABC Computer</Hersteller>
+                            <Modell>v1</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <ArtTSE>3</ArtTSE>
+                            <InbetriebnahmeTSE>01.01.2022</InbetriebnahmeTSE>
+                            <BSIID>0563-2023</BSIID>
+                            <AnschaffungAS>31.12.2021</AnschaffungAS>
+                            <InbetriebnahmeAS>01.01.2022</InbetriebnahmeAS>
+                            <AusserbetriebnahmeAS>01.02.2022</AusserbetriebnahmeAS>
+                            <GrundAusserbetriebnahme>Filiale geschlossen</GrundAusserbetriebnahme>
+                            <Bemerkungen>keinerlei</Bemerkungen>
+                        </AngabenAufzeichnungssystem>
+                        <AngabenAufzeichnungssystem>
+                            <Art>1</Art>
+                            <Software>Windows</Software>
+                            <SoftwareVersion>1234556</SoftwareVersion>
+                            <SeriennummerAS>1234556</SeriennummerAS>
+                            <Hersteller>Microsoft</Hersteller>
+                            <Modell>evolve</Modell>
+                            <SeriennummerTSE>1234567890123456789012345678901234567890123456789012345678901234</SeriennummerTSE>
+                            <InbetriebnahmeTSE>01.01.2023</InbetriebnahmeTSE>
+                            <BSIID>0563-2023</BSIID>
+                            <AnschaffungAS>12.12.2021</AnschaffungAS>
+                            <InbetriebnahmeAS>01.12.2022</InbetriebnahmeAS>
+                        </AngabenAufzeichnungssystem>
+                    </Aufzeichnung146a>
+                </Aufzeichnung146a>
+            </Nutzdaten>
+        </Nutzdatenblock>
+    </DatenTeil>
+</Elster>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Elster xmlns="http://www.elster.de/elsterxml/schema/v11">
+    <TransferHeader version="11">
+        <Verfahren>ElsterErklaerung</Verfahren>
+        <DatenArt>AStGHZB</DatenArt>
+        <Vorgang>send-Auth</Vorgang>
+        <Testmerker>700000004</Testmerker>
+        <HerstellerID>74931<!-- Bitte durch die eigene Hersteller-ID ersetzen --></HerstellerID>
+        <DatenLieferant>ERiC Beispiele</DatenLieferant>
+        <Datei>
+            <Verschluesselung>CMSEncryptedData</Verschluesselung>
+            <Kompression>GZIP</Kompression>
+            <TransportSchluessel/>
+            <Erstellung/>
+        </Datei>
+        <VersionClient>ERiC Beispiele</VersionClient>
+    </TransferHeader>
+    <DatenTeil>
+        <Nutzdatenblock>
+            <NutzdatenHeader version="11">
+                <NutzdatenTicket>1</NutzdatenTicket>
+                <Empfaenger id="F">9198</Empfaenger>
+            </NutzdatenHeader>
+            <Nutzdaten>
+                <AStGHZB xmlns="http://finkonsens.de/elster/elstererklaerung/astghzb/v1" version="1">
+                    <ASt1B>
+                        <StNr>1194060994534</StNr>
+                        <FestJ>2025</FestJ>
+                        <Allg>
+                            <Name>voluptates</Name>
+                            <OdGL>Error aut iure aut inventore eius quisquam.</OdGL>
+                            <OdGLStaat>AF</OdGLStaat>
+                            <OdS>Error beatae itaque.</OdS>
+                            <OdSStaat>CY</OdSStaat>
+                            <RF>autem</RF>
+                            <AeGesBes>2</AeGesBes>
+                        </Allg>
+                        <WJAng>
+                            <WJ>WJ1</WJ>
+                            <BeginnWj>01.01.2025</BeginnWj>
+                            <EndeWj>01.01.2025</EndeWj>
+                            <VerSch>1</VerSch>
+                            <Nenner>0.01</Nenner>
+                            <AuslWaeh>EUR</AuslWaeh>
+                            <Bilanz>1</Bilanz>
+                            <P13>
+                                <P13DEEK>1</P13DEEK>
+                                <P13MasEK>
+                                    <P13ZwSu>1</P13ZwSu>
+                                    <P13Verl>1</P13Verl>
+                                    <P13EK>0</P13EK>
+                                </P13MasEK>
+                                <P13Auft>
+                                    <P13AufEK>0</P13AufEK>
+                                </P13Auft>
+                                <VV13>
+                                    <VV13AB>501</VV13AB>
+                                    <VV13Rest>501</VV13Rest>
+                                    <VV1310d1>1</VV1310d1>
+                                    <VV13EB>500</VV13EB>
+                                </VV13>
+                                <P5P13>
+                                    <P5P13MasEK>1</P5P13MasEK>
+                                    <P5P13AusEK>90</P5P13AusEK>
+                                    <P5P13Zw>-89</P5P13Zw>
+                                    <P5P13EK>-89</P5P13EK>
+                                    <P5P13Auft>
+                                        <P5P13AufEK>0</P5P13AufEK>
+                                    </P5P13Auft>
+                                    <VV513>
+                                        <VV513AB>999999999917</VV513AB>
+                                        <VV5138c>999999999999</VV5138c>
+                                        <VV513VerlWj>89</VV513VerlWj>
+                                        <VV513EB>7</VV513EB>
+                                    </VV513>
+                                </P5P13>
+                            </P13>
+                        </WJAng>
+                        <SummeEK>
+                            <HZB135>0</HZB135>
+                        </SummeEK>
+                    </ASt1B>
+                    <FB>
+                        <Allgemein>
+                            <AnlArtBet>2</AnlArtBet>
+                            <Namenszeile1>Accusamus tempore velit consequatur dolor perspiciatis.</Namenszeile1>
+                            <PLZ>60188</PLZ>
+                            <Ort>vero</Ort>
+                            <Steuernummer>2139085407306</Steuernummer>
+                            <IdNr>06841351215</IdNr>
+                        </Allgemein>
+                        <WJA>
+                            <WJ>WJ1</WJ>
+                            <HinzP>01.01.2025</HinzP>
+                            <Zaehler>0</Zaehler>
+                            <ArtStpfl>4</ArtStpfl>
+                            <HZB>
+                                <HZBBet>0</HZBBet>
+                            </HZB>
+                        </WJA>
+                        <HZKV>
+                            <Strang>
+                                <StrangArt>2</StrangArt>
+                                <M>
+                                    <StrangName>Consectetur ab praesentium quam.</StrangName>
+                                    <StrangStnr>2497009877132</StrangStnr>
+                                </M>
+                                <AB>
+                                    <StrangAb>500</StrangAb>
+                                    <StrangHZB1>0</StrangHZB1>
+                                    <StrangMax>500</StrangMax>
+                                    <StrangBez>
+                                        <BezArt>1</BezArt>
+                                        <BezDat>01.01.2000</BezDat>
+                                        <MasDat>01.01.2025</MasDat>
+                                        <BezB>498</BezB>
+                                        <BezBMinus>498</BezBMinus>
+                                    </StrangBez>
+                                    <EB>
+                                        <StrangEb>2</StrangEb>
+                                    </EB>
+                                </AB>
+                            </Strang>
+                            <G>
+                                <VHZKV>2</VHZKV>
+                            </G>
+                        </HZKV>
+                    </FB>
+                </AStGHZB>
+            </Nutzdaten>
+        </Nutzdatenblock>
+    </DatenTeil>
+</Elster>
+

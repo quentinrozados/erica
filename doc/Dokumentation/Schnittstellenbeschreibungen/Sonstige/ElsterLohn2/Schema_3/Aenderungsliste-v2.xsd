@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://finkonsens.de/lavendel/datenuebermittler/aenderungsliste/v2" 
+xmlns:ct="http://finkonsens.de/lavendel/datenuebermittler/types/complex/v2" 
+xmlns:st="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2" 
+targetNamespace="http://finkonsens.de/lavendel/datenuebermittler/aenderungsliste/v2" 
+elementFormDefault="qualified" 
+attributeFormDefault="unqualified">
+	<xs:import namespace="http://finkonsens.de/lavendel/datenuebermittler/types/complex/v2" schemaLocation="./ComplexTypes-v2.xsd"/>
+	<xs:import namespace="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2" schemaLocation="./SimpleTypes-v2.xsd"/>
+	<xs:element name="Aenderungsliste">
+		<xs:annotation>
+			<xs:documentation>Standardformat für ELStAM-Mitteilungen an		Arbeitgeber. In diesem Format werden		An-/Ab-/Ummelde-Bestätigungslisten, Bruttolisten und Monatslisten		erstellt.		</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence minOccurs="1" maxOccurs="1">
+				<xs:element name="Arbeitgeber" type="ct:ArbeitgeberComplex">
+					<xs:annotation>
+						<xs:documentation>Arbeitgeber, für den der Datenübermittler tätig
+wird.</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="stnrDUe" type="st:StNrSimple" use="required">
+				<xs:annotation>
+					<xs:documentation>Steuernummer des Datenübermittlers.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="transferTicket" type="st:TransferTicketSimple" use="required">
+				<xs:annotation>
+					<xs:documentation>TransferTicket, welches vom ERiClet beim Request
+						erzeugt wurde.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="nutzdatenTicket" type="st:NutzdatenTicketSimple" use="required">
+				<xs:annotation>
+					<xs:documentation>NutzdatenTicket, welches bei dem Request
+						mitgegeben wurde.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="art" type="st:ArtSimple" use="required">
+				<xs:annotation>
+					<xs:documentation>Beschreibt die Art der Änderungsliste
+						(Bestätigungsliste auf An-/Ab-/Ummeldung, Bruttoliste,
+						Monatsliste).
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="laufendeNummer" type="xs:int" use="required">
+				<xs:annotation>
+					<xs:documentation>Laufende Nummer der Änderungsliste. Das Format
+						ist
+						JJJJMMNNN, also z.B. für die erste Januarliste 2012 der Wert
+						201201001. Es wird 999999999 geliefert wenn die Laufende Nummer
+						für
+						die Liste nicht relvant ist ein Beispiel ist in der
+						Dokumenation zu
+						finden.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="anzahlTeillisten" type="xs:int" use="required">
+				<xs:annotation>
+					<xs:documentation>Anzahl der in der Lieferung enthaltenen
+						TeillistenLaufende Nummer der Änderungsliste. Das Format ist NNN,
+						also z.B. 002 für eine Lieferung mit 2 Teillisten. Die Anzahl
+						Teillisten wird mit 000 geliefert, wenn dieser Wert für die Liste
+						nicht relevant ist.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="schemaversion" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>Ein zeitgleicher Einsatz mehrerer XSD-Versionen
+						im
+						produktiven Verfahren ist nicht vorgesehen. Ein Versionswechsel
+						kann bei Bedarf in der ersten Kalenderwoche eines Jahres
+						durchgeführt werden.
+					</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

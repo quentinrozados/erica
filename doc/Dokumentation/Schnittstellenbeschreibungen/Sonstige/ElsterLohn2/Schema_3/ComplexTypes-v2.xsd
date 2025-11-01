@@ -1,0 +1,660 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+xmlns="http://finkonsens.de/lavendel/datenuebermittler/types/complex/v2"
+xmlns:st="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2"
+targetNamespace="http://finkonsens.de/lavendel/datenuebermittler/types/complex/v2"
+elementFormDefault="qualified" attributeFormDefault="unqualified">
+    <xs:import namespace="http://finkonsens.de/lavendel/datenuebermittler/types/simple/v2" schemaLocation="./SimpleTypes-v2.xsd"/>
+    <xs:complexType name="KinderFreibetragComplex">
+        <xs:attribute name="anzahl" use="required">
+            <xs:annotation>
+                <xs:documentation>Zahl der Kinderfreibeträge des Arbeitnehmers.
+                    Angabe mit einer Nachkommastelle in Schritten von 0,5.
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:decimal">
+                    <xs:fractionDigits value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="KirchensteuerComplex">
+        <xs:attribute name="konfession" type="st:KonfessionSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Werteliste, zweistellig</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="FaktorComplex">
+        <xs:attribute name="wert" use="required">
+            <xs:annotation>
+                <xs:documentation>Übermittlung der 3 Nachkommastellen des
+                    Faktors.
+                    Der Wert "0" bedeutet "Kein Faktorverfahren".
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ArbeitgeberComplex">
+        <xs:sequence>
+            <xs:element name="Arbeitnehmer" type="ArbeitnehmerComplex" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Arbeitnehmer, für den die
+Besteuerungsmerkmale
+geliefert werden.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AG-Verfahrenshinweis" type="AG-VerfahrenshinweisComplex">
+                <xs:annotation>
+                    <xs:documentation>Hinweis des Verfahrens zum Ergebnis.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Steuernummerhinweis" type="SteuernummerHinweisComplex" minOccurs="0" maxOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Hinweis des Verfahrens zu einer neuen Steuernummer.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="stnrAG" type="st:StNrSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Steuernummer des Arbeitgebers.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ArbeitnehmerComplex">
+        <xs:sequence>
+            <xs:element name="ListeBasisELStAM" type="ListeBasisELStAM" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Im Fall der Abmeldung und in bestimmten Fehlersituationen werden keine BasisELStAM geliefert.
+Außerdem darf dieser Block fehlen, wenn der Block ListeKVPV geliefert wird.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ListeKVPV" type="ListeKVPV" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Dieser Block darf fehlen, wenn der Block ListeBasisELStAM geliefert wird.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="AN-Verfahrenshinweis" type="AN-VerfahrenshinweisComplex" minOccurs="1" maxOccurs="unbounded">
+                <xs:annotation>
+                    <xs:documentation>Hinweis des Verfahrens zum einzelnen
+                        Arbeitnehmer.
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="idnr" type="st:IdNrSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>IdNr des Arbeitnehmers.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="beschaeftigungsbeginn" type="st:DatumSimple">
+            <xs:annotation>
+                <xs:documentation>Dieses Datum wird nur bei Ummeldungen
+                    zurückgegeben.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="refDatumAG" type="st:DatumSimple" use="optional">
+            <xs:annotation>
+                <xs:documentation>Dieses Datum wird nur bei Bruttolisten
+                    zurückgegeben. Das Attribut beinhaltet das Referenzdatum des
+                    Arbeitsverhältnisses dieser AG/DUE-Zuordnung.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="SteuerklasseComplex">
+        <xs:attribute name="nummer" use="required">
+            <xs:annotation>
+                <xs:documentation>Steuerklasse des Arbeitnehmers im Haupt- oder
+                    Nebenarbeitsverhältnis (HAV bzw. NAV).
+                </xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="st:SteuerklasseSimple">
+                    <xs:minInclusive value="1"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="FreibetragComplex">
+        <xs:annotation>
+            <xs:documentation>Für HAV oder NAV ggf. ausgewiesener Freibetrag für
+                das aktuelle Jahr ab Gültigkeitsbeginn dieser Besteuerungsmerkmale.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="jahr" type="st:BetragSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Jahreswert des Freibetrages.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="monat" type="st:BetragSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Monatswert des Freibetrages.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="woche" type="st:BetragDezimalSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Wochenwert des Freibetrages.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tag" type="st:BetragDezimalSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Tageswert des Freibetrages.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="HinzurechnungsbetragComplex">
+        <xs:annotation>
+            <xs:documentation>Für NAV ggf. ausgewiesener Hinzurechnungsbetrag für
+                das HAV im laufenden Jahr ab Gültigkeitsbeginn dieser
+                Besteuerungsmerkmale.
+            </xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="jahr" type="st:BetragSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Jahreswert des Hinzurechnungsbetrages.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="monat" type="st:BetragSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Monatswert des Hinzurechnungsbetrages.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="woche" type="st:BetragDezimalSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Wochenwert des Hinzurechnungsbetrages.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tag" type="st:BetragDezimalSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Tageswert des Hinzurechnungsbetrages.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="AG-VerfahrenshinweisComplex">
+        <xs:attribute name="code" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den Returncode des
+Verfahrens ElsterLohn2.     </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="message" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den entsprechenden
+Hinweistext zu einem Code.  </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="type" type="st:HinweisSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den Typ eines Hinweise.        </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="SteuernummerHinweisComplex">
+        <xs:attribute name="code" type="xs:int" use="required" fixed="551000009">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den Returncode 551000009.      </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="message" type="xs:string" use="required" fixed="Bitte verwenden Sie im Verfahren ElsterLohn II die im Attribut steuernummer enthaltene Steuernummer">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den entsprechenden
+Hinweistext diesem Hinweis. </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="type" type="st:HinweisSimple" use="required" fixed="INFORMATION">
+            <xs:annotation>
+                <xs:documentation>Ist immer INFORMATION.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="steuernummer" type="st:StNrSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet die neue Steuernummer eines
+Arbeitgebers, falls diese noch nicht im Verfahren verwendet wird.           </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="AN-VerfahrenshinweisComplex">
+        <xs:attribute name="code" type="xs:int" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den Returncode des
+                    Verfahrens ElsterLohn2.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="datum" type="st:DatumSimple" use="optional">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet das Datum zu einem Hinweis,
+                    falls dieses für den Hinweis relevant ist.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="datumAlt" type="st:DatumSimple" use="optional">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet das alte Beschäftigungsende
+                    zu dem Hinweis 552020306.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="message" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den entsprechenden
+                    Hinweistext zu einem Code.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="type" type="st:HinweisSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Dieses Feld beinhaltet den Typ eines Hinweise.
+                </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ListeBasisELStAM">
+        <xs:sequence>
+            <xs:element name="BasisELStAM" type="BasisELStAM" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ListeKVPV">
+        <xs:sequence>
+            <xs:element name="KVPV" type="KVPV" minOccurs="1" maxOccurs="3">
+                <xs:annotation>
+                    <xs:documentation>KVPV-Beiträge</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="BasisELStAM">
+        <xs:annotation>
+            <xs:documentation>Besteuerungsmerkmale zum Arbeitsverhältnis</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="Steuerklasse">
+                <xs:annotation>
+                    <xs:documentation>Mögliche Steuerklassen: 1,2,3,4,5,6</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="nummer" use="required">
+                        <xs:annotation>
+                            <xs:documentation>Steuerklasse des Arbeitnehmers im Haupt- oder Nebenarbeitsverhältnis (HAV bzw. NAV)</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="st:SteuerklasseSimple">
+                                <xs:minInclusive value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Kinderfreibetrag">
+                <xs:annotation>
+                    <xs:documentation>Zu berücksichtigende Kinderfreibeträge.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="anzahl" use="required">
+                        <xs:annotation>
+                            <xs:documentation>Zahl der Kinderfreibeträge des Arbeitnehmers. Angabe mit einer Nachkommastelle in Schritten von 0,5.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:decimal">
+                                <xs:fractionDigits value="1"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Kirchensteuer">
+                <xs:annotation>
+                    <xs:documentation>Kirchensteuer des Steuerpflichtigen in Abhängigkeit von der Religionszugehörigkeit, dem Bundesländern Wohnort und dem Bundesland Firmenstitz (bei Arbeitnehmern).</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="konfession" type="st:KonfessionSimple" use="required">
+                        <xs:annotation>
+                            <xs:documentation>Werteliste, zweistellig</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="KirchensteuerPartner" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Wann dieses Element als Teil der Besteuerungsmerkmale geliefert wird, ist von mehreren Faktoren anhängig. Familienstand VH allein reicht nicht aus. </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="konfession" type="st:KonfessionSimple" use="required">
+                        <xs:annotation>
+                            <xs:documentation>Werteliste, zweistellig</xs:documentation>
+                        </xs:annotation>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Faktor">
+                <xs:annotation>
+                    <xs:documentation>Angabe eines Faktor bei Steuerklasse 4. Nur möglich, wenn keine Freibeträge ausgewiesen sind, ansonsten wird der Wert 0 übermittelt.  Bei den Steuerklassen 1,2,3,5 oder 6 ist nur der Wert 0 zulässig.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                    <xs:attribute name="wert" use="required">
+                        <xs:annotation>
+                            <xs:documentation>Übermittlung der 3 Nachkommastellen des Faktors. Der Wert "0" bedeutet "Kein Faktorverfahren".</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:int">
+                                <xs:minInclusive value="0"/>
+                                <xs:maxInclusive value="999"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:attribute>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="Freibetrag" type="Freibetrag">
+                <xs:annotation>
+                    <xs:documentation>Für HAV oder NAV ausgewiesener Freibetrag für das aktuelle Jahr ab Gültigkeitsbeginn dieser Besteuerungsmerkmale. Bei Angabe eines Faktors ist nur der Wert "0" erlaubt.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Hinzurechnungsbetrag" type="Hinzurechnungsbetrag" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Für das HAV ggf. ausgewiesener Hinzurechnungsbetrag (Antragswert) im laufenden Jahr ab Gültigkeitsbeginn dieser Besteuerungsmerkmale. Für das NAV wird kein Hinzurechnungsbetrag übermittelt.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="gueltigAb" type="st:DatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Beginn der Gültigkeit dieser Besteuerungsmerkmale des Arbeitnehmers.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="Freibetrag">
+        <xs:annotation>
+            <xs:documentation>Für HAV oder NAV ggf. ausgewiesener Freibetrag für das aktuelle Jahr ab Gültigkeitsbeginn dieser Besteuerungsmerkmale.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="jahr" use="required">
+            <xs:annotation>
+                <xs:documentation>Jahreswert des Freibetrages</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="monat" use="required">
+            <xs:annotation>
+                <xs:documentation>Monatswert des Freibetrages</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="woche" type="xs:decimal" use="required">
+            <xs:annotation>
+                <xs:documentation>Wochenwert des Freibetrages</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tag" type="xs:decimal" use="required">
+            <xs:annotation>
+                <xs:documentation>Tageswert des Freibetrages</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="Hinzurechnungsbetrag">
+        <xs:annotation>
+            <xs:documentation>Für NAV ggf. ausgewiesener Hinzurechnungsbetrag für das HAV im laufenden Jahr ab Gültigkeitsbeginn dieser Besteuerungsmerkmale.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="jahr" use="required">
+            <xs:annotation>
+                <xs:documentation>Jahreswert des Hinzurechnungsbetrages</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="monat" use="required">
+            <xs:annotation>
+                <xs:documentation>Monatswert des Hinzurechnungsbetrages</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="woche" type="xs:decimal" use="required">
+            <xs:annotation>
+                <xs:documentation>Wochenwert des Hinzurechnungsbetrages</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="tag" type="xs:decimal" use="required">
+            <xs:annotation>
+                <xs:documentation>Tageswert des Hinzurechnungsbetrages</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="KVPV">
+        <xs:annotation>
+            <xs:documentation>Zuschuss und Vorsorgepauschalen zur privaten KV/PV</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="KVPVBeitraege" type="KVPVBeitragsintervall" maxOccurs="12">
+                <xs:annotation>
+                    <xs:documentation>Für jedes ausgewiesene Intervall werden zu allen Beitragsarten Monatswerte übermittelt.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Besteuerungszeitraum" use="required">
+            <xs:annotation>
+                <xs:documentation>Besteuerungszeitraum dieser KV/PV-Werte des Arbeitnehmers. (Jahr im Format JJJJ)</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:gYear">
+                    <xs:minInclusive value="2021"/>
+                    <xs:maxInclusive value="2099"/>
+                    <!-- Jahr des Zuflusses/Abflusses -->
+                    <!-- jhjj -->
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="KVPVBeitragsintervall">
+        <xs:annotation>
+            <xs:documentation>Zuschuss und Vorsorgepauschalen zur privaten KV/PV</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="KVZuschuss" type="KVPVMonatsBeitrag">
+                <xs:annotation>
+                    <xs:documentation>monatlicher Beitrag für einen Zuschuss zur privaten Krankenversicherung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="KVVorsorge" type="KVPVMonatsBeitrag">
+                <xs:annotation>
+                    <xs:documentation>monatlicher Beitrag für einen Vorsorgebetrag zur privaten Krankenversicherung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="PVZuschuss" type="KVPVMonatsBeitrag">
+                <xs:annotation>
+                    <xs:documentation>monatlicher Beitrag für einen Zuschuss zur privaten Pflege-Pflichtversicherung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="PVVorsorge" type="KVPVMonatsBeitrag">
+                <xs:annotation>
+                    <xs:documentation>monatlicher Beitrag für einen Vorsorgebetrag zur privaten Pflege-Pflichtversicherung</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="gueltigAb" use="required">
+            <xs:annotation>
+                <xs:documentation>Beginn der Gültigkeit dieser KV/PV-Werte des Arbeitnehmers.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="12"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="gueltigBis" use="required">
+            <xs:annotation>
+                <xs:documentation>Ende der Gültigkeit dieser KV/PV-Werte des Arbeitnehmers.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="12"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="KVPVBeitrag">
+        <xs:annotation>
+            <xs:documentation>monatlicher KVPV-Beitrag mit Gültigkeitsbeginn und -ende</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="monatsBeitrag" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>Monatswert des KV/PV-Beitrags</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:int">
+                        <xs:minInclusive value="0"/>
+                        <xs:maxInclusive value="999999999"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="gueltigAb" use="required">
+            <xs:annotation>
+                <xs:documentation>Beginn der Gültigkeit dieser KV/PV-Werte des Arbeitnehmers.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="12"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+        <xs:attribute name="gueltigBis" use="required">
+            <xs:annotation>
+                <xs:documentation>Ende der Gültigkeit dieser KV/PV-Werte des Arbeitnehmers.</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="1"/>
+                    <xs:maxInclusive value="12"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="KVPVMonatsBeitrag">
+        <xs:annotation>
+            <xs:documentation>monatlicher KVPV-Beitragswert</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="monatsBeitrag" use="required">
+            <xs:annotation>
+                <xs:documentation>Monatswert des KVPV-Beitrags</xs:documentation>
+            </xs:annotation>
+            <xs:simpleType>
+                <xs:restriction base="xs:int">
+                    <xs:minInclusive value="0"/>
+                    <xs:maxInclusive value="999999999"/>
+                </xs:restriction>
+            </xs:simpleType>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ArbeitnehmerAbmeldenComplex">
+        <xs:attribute name="idnr" type="st:IdNrSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>IdNr des Arbeitnehmers nach §139b AO.         </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="gebdat" type="st:GeburtsdatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Geburtsdatum zur Verifikation. Lässt auch
+teilweise oder vollständig unbekannte Daten zu. In diesen Fällen
+wird der Wert für Tag, Monat oder Jahr entsprechend genullt
+(19501231, 19501200, 19500000, 00000000)    </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="refDatumAG" type="st:DatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Referenzdatum des Arbeitgebers, das in der
+abzumeldenden Anmeldung angegeben war. Angabe in der Form JJJJMMTT. </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="abmeldeDatum" type="st:DatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Ende des Beschäftigungsverhältnisses laut Arbeitsvertrag. Angabe in der Form JJJJMMTT.        </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ArbeitnehmerAnmeldenComplex">
+        <xs:attribute name="idnr" type="st:IdNrSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>IdNr des Arbeitnehmers nach §139b AO.         </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="gebdat" type="st:GeburtsdatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Geburtsdatum zur Verifikation. Lässt auch
+teilweise oder vollständig unbekannte Daten zu. In diesen Fällen wird der Wert für Tag, Monat oder Jahr entsprechend genullt
+(19501231, 19501200, 19500000, 00000000)</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="istHauptarbeitgeber" type="xs:boolean" use="required">
+            <xs:annotation>
+                <xs:documentation>Gibt an, ob der Arbeitgeber der Hauptarbeitgeber ist.     </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="gewuenschterFreibetrag" type="st:BetragSimple" use="optional">
+            <xs:annotation>
+                <xs:documentation>Für ein NAV kann der gewünschte jährliche Freibetrag aus Hinzurechnung eingetragen werden. Maximal ist hier 999999999 zu übergeben.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="beschaeftigungsbeginn" type="st:DatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Beginn des Beschäftigungsverhältnisses
+laut Arbeitsvertrag. Angabe in der Form JJJJMMTT.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="refDatumAG" type="st:DatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Referenzdatum des Arbeitgebers, ab dem
+für diese   Anmeldung ELStAM geliefert werden sollen; frühestens aber   Beginn des Beschäftigungsverhältnisses. 
+Weitere Einschränkungen  ergeben sich aus der Schnittstellenbeschreibung ELStAM/ZK. Besonderheit: 
+Bei Anmeldungen von Nebenbeschäftigungen zwecks Änderung des Freibetrags aus Hinzurechnung ist hier das Datum einzutragen, ab dem der geänderte Freibetrag gelten soll. Angabe in der Form JJJJMMTT.</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="ArbeitnehmerUmmeldenComplex">
+        <xs:attribute name="idnr" type="st:IdNrSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>IdNr des Arbeitnehmers nach §139b AO.         </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="gebdat" type="st:GeburtsdatumSimple" use="required">
+            <xs:annotation>
+                <xs:documentation>Geburtsdatum zur Verifikation. Lässt auch
+teilweise oder vollständig unbekannte Daten zu. In diesen Fällen wird der Wert für Tag, Monat oder Jahr entsprechend
+genullt (19501231, 19501200, 19500000, 00000000)    </xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

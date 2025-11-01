@@ -1,0 +1,30 @@
+dl.section.return dd ul, dl.section.see dd ul {
+  margin-block-start: 0px;
+}
+
+a.link_extern::after {
+  /* Externer Link ist ein Link auf eine Datei     */
+  /* außerhalb des ERiC Dokumentationspakets       */
+	
+  content: url(link_extern_blau.svg);
+  padding-left: 3px;  
+}
+
+a.pdf_icon::after {	
+  content: url(pdf_icon.svg);
+  padding-left: 2px;  
+}
+
+p.starttd {
+  margin-bottom: 3px;
+}
+
+p.intertd {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+p.endtd {
+  margin-top: 3px;
+  margin-bottom: 6px;
+}
