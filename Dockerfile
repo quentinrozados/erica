@@ -4,10 +4,14 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR 1
 
-ARG bucket_name
-ARG access_key_id
-ARG access_key
-ARG endpoint_url
+ARG ERICA_BUCKET_NAME
+ARG AWS_ACCESS_KEY_ID
+ARG AWS_SECRET_ACCESS_KEY
+ARG ENDPOINT_URL
+ENV ERICA_BUCKET_NAME=${ERICA_BUCKET_NAME}
+ENV AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+ENV AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+ENV ENDPOINT_URL=${ENDPOINT_URL}
 ARG elster_datenlieferant
 ARG elster_hersteller_id
 ENV ELSTER_DATENLIEFERANT=$elster_datenlieferant
@@ -35,7 +39,7 @@ RUN pip install --upgrade --no-cache-dir pip pipenv && pipenv install --ignore-p
 COPY . .
 
 # Get tax office list and ERiC libraries
-RUN env ERICA_BUCKET_NAME=$bucket_name AWS_ACCESS_KEY_ID=$access_key_id AWS_SECRET_ACCESS_KEY=$access_key ENDPOINT_URL=$endpoint_url pipenv run python scripts/load_eric_binaries.py download-eric-cert-and-binaries && \
+RUN env ERICA_BUCKET_NAME=$ERICA_BUCKET_NAME AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY ENDPOINT_URL=$ENDPOINT_URL pipenv run python scripts/load_eric_binaries.py download-eric-cert-and-binaries && \
     env ERICA_ENV=testing pipenv run python scripts/create_tax_office_lists.py create
 
 EXPOSE 8000
