@@ -17,6 +17,7 @@ ARG elster_hersteller_id
 ENV ELSTER_DATENLIEFERANT=$elster_datenlieferant
 ENV ELSTER_HERSTELLER_ID=$elster_hersteller_id
 ENV PYTHONPATH=/app
+ENV LD_LIBRARY_PATH=/app/erica/worker/lib:$LD_LIBRARY_PATH
 
 WORKDIR /app
 RUN echo "Package: *\nPin: release n=bookworm\nPin-Priority: 50\n" >> /etc/apt/preferences && \
