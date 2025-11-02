@@ -32,7 +32,7 @@ class Settings(BaseSettings):
     ttl_job_expires_in_sec: int = 540
     ttl_processing_request_entities_in_min: int = 10
     ttl_finished_request_entities_in_min: int = 20
-    use_immediate_worker: bool = False
+    use_immediate_worker: bool = True
     sentry_dsn_api: str = None
     sentry_dsn_worker: str = None
     run_with_huey: bool = False
