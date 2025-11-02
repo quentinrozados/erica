@@ -101,12 +101,23 @@ def get_vast_beleg_request_th_fields(use_testmerker):
     )
 
 
+def get_ustva_th_fields(use_testmerker):
+    return TransferHeaderFields(
+        datenart='UStVA',
+        testmerker=_get_testmerker('ElsterAnmeldung', use_testmerker),
+        herstellerId=_HERSTELLER_ID,
+        verfahren='ElsterAnmeldung',
+        datenLieferant=_DATENLIEFERANT,
+    )
+
+
 def _get_testmerker(verfahren, use_testmerker):
     _TESTMERKER = {
         'ElsterErklaerung': '700000004',
         'ElsterDatenabholung': '370000001',
         'ElsterBRM': '370000001',
-        'ElsterSignatur': '080000001'
+        'ElsterSignatur': '080000001',
+        'ElsterAnmeldung': '700000004'
     }
     if get_settings().use_testmerker or use_testmerker:
         return _TESTMERKER[verfahren]

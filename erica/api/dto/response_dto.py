@@ -27,5 +27,13 @@ class ResultTransferPdfResponseDto(BaseDto):
     pdf: str
 
 
+class ResultTransferTicketResponseDto(BaseDto):
+    transferticket: str
+
+
 class ResultValidationErrorResponseDto(BaseDto):
     validation_errors: List[str]
+
+
+class ResultMessageResponseDto(BaseDto):
+    message: str

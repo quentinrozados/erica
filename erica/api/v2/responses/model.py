@@ -3,6 +3,7 @@ from erica.api.dto.freischaltcode import FreischaltcodeRequestAndActivationRespo
 from erica.api.dto.response_dto import ResponseErrorDto
 from erica.api.dto.grundsteuer_dto import GrundsteuerResponseDto
 from erica.api.dto.tax_declaration_dto import EstResponseDto
+from erica.api.dto.ustva_dto import UstvaResponseDto
 from erica.api.dto.tax_number_validation_dto import TaxResponseDto
 
 model_404_error_get_from_queue = {"model": ResponseErrorDto,
@@ -33,6 +34,11 @@ response_model_get_send_est_from_queue = {
 response_model_get_send_grundsteuer_from_queue = {
     200: {"model": GrundsteuerResponseDto,
           "description": "Job status of a sent grundsteuer was successfully retrieved from the queue."},
+    **base_response_get_from_queue}
+
+response_model_get_send_ustva_from_queue = {
+    200: {"model": UstvaResponseDto,
+          "description": "Job status of a sent UStVA was successfully retrieved from the queue."},
     **base_response_get_from_queue}
 
 response_model_get_tax_number_validity_from_queue = {

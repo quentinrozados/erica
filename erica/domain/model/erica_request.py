@@ -12,6 +12,7 @@ class RequestType(int, Enum):
     check_tax_number = 3
     send_est = 4
     grundsteuer = 5
+    send_ustva = 6
 
 
 class Status(int, Enum):

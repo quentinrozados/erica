@@ -58,6 +58,13 @@ class GrundsteuerPyericProcessController(PyericProcessController):
         return eric_wrapper.validate_and_send(self.xml, self._VERFAHREN)
 
 
+class UstvaPyericProcessController(PyericProcessController):
+    _VERFAHREN = "UStVA_2025"
+
+    def run_eric(self, eric_wrapper):
+        return eric_wrapper.process_verfahren(self.xml, self._VERFAHREN)
+
+
 class UnlockCodeRequestPyericProcessController(PyericProcessController):
     _VERFAHREN = "SpezRechtAntrag"
 

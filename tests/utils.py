@@ -10,6 +10,15 @@ from erica.domain.payload.freischaltcode import FreischaltCodeRequestPayload, Fr
 from erica.domain.payload.tax_declaration import TaxDeclarationPayload
 from erica.domain.payload.tax_number_validation import CheckTaxNumberPayload
 from erica.api.dto.grundsteuer_dto import GrundsteuerDto
+from erica.api.dto.ustva_dto import (
+    UstvaDto,
+    UstvaPayload,
+    UstvaSteuerfall,
+    UstvaUnternehmer,
+    UstvaUmsatzsteuervoranmeldung,
+    UstvaDatenLieferant,
+    UstvaHersteller,
+)
 from worker.samples.grundsteuer_sample_data import SampleGrundsteuerData
 from worker.utils import create_meta_data, create_form_data
 
@@ -66,6 +75,53 @@ def create_send_est():
 
 def create_send_grundsteuer():
     return GrundsteuerDto(payload=SampleGrundsteuerData().parse(), client_identifier="grundsteuer")
+
+
+def create_send_ustva():
+    payload = UstvaPayload(
+        erstellungsdatum=date(2025, 1, 5),
+        daten_lieferant=UstvaDatenLieferant(
+            name="Alois Mustermann",
+            strasse="Testgasse 13",
+            plz="08151",
+            ort="Musterstadt",
+            telefon="0815/99999999",
+            email="Mustermann@Geschaeft.de",
+        ),
+        steuerfall=UstvaSteuerfall(
+            unternehmer=UstvaUnternehmer(
+                bezeichnung="Ihr Laden",
+                name="Mustermann",
+                vorname="Alois",
+                strasse="Testgasse",
+                hausnummer="13",
+                hnr_zusatz="a",
+                anschriften_zusatz="Ums Eck",
+                ort="Musterstadt",
+                plz="08151",
+                telefon="0815/99999999",
+                email="Mustermann@Geschaeft.de",
+            ),
+            umsatzsteuervoranmeldung=UstvaUmsatzsteuervoranmeldung(
+                jahr=2025,
+                zeitraum="01",
+                steuernummer="1096081508187",
+                kz09="74931",
+                kz35="10000",
+                kz36="1600.00",
+                kz66="15000.00",
+                kz69="200.00",
+                kz81="150000",
+                kz83="17050.00",
+                kz86="25000",
+            ),
+        ),
+        hersteller=UstvaHersteller(
+            produkt_name="Test",
+            produkt_version="42",
+        ),
+    )
+    return UstvaDto(payload=payload, client_identifier="ustva-client")
 
 
 def get_job_service_patch_string(endpoint):

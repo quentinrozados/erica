@@ -9,6 +9,7 @@ from erica.worker.elster_xml.xml_parsing.elster_specifics_xml_parsing import get
 from erica.worker.pyeric.eric_errors import InvalidBufaNumberError
 from erica.worker.pyeric.pyeric_response import PyericResponse
 from erica.worker.elster_xml import est_mapping, elster_xml_generator
+from erica.worker.elster_xml.ustva_xml import generate_full_ustva_xml
 
 from erica.worker.elster_xml.xml_parsing.erica_xml_parsing import get_elements_text_from_xml
 
@@ -17,7 +18,7 @@ from erica.worker.pyeric.pyeric_controller import EstPyericProcessController, \
     UnlockCodeActivationPyericProcessController, UnlockCodeRequestPyericProcessController, \
     UnlockCodeRevocationPyericProcessController, \
     DecryptBelegePyericController, BelegIdRequestPyericProcessController, \
-    BelegRequestPyericProcessController, CheckTaxNumberPyericController
+    BelegRequestPyericProcessController, CheckTaxNumberPyericController, UstvaPyericProcessController
 from erica.worker.pyeric.check_elster_request_id import add_new_request_id_to_cache_list, \
     request_needs_testmerker, tax_id_number_is_test_id_number
 from erica.worker.request_processing.eric_mapper import EstEricMapping, UnlockCodeRequestEricMapper
@@ -259,3 +260,15 @@ class GetAddressRequestController(GetBelegeRequestController):
         response = super().generate_json(pyeric_response)
         response['address'] = get_address_from_xml(pyeric_response.server_response)
         return response
+
+
+class UstvaRequestController(TransferticketRequestController):
+    _PYERIC_CONTROLLER = UstvaPyericProcessController
+
+    def _is_testmerker_used(self):
+        if getattr(self.input_data, 'use_testmerker', None) is not None:
+            return bool(self.input_data.use_testmerker)
+        return get_settings().use_testmerker
+
+    def generate_full_xml(self, use_testmerker):
+        return generate_full_ustva_xml(self.input_data, use_testmerker)

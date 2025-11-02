@@ -6,6 +6,7 @@ from erica.api.service.base_service import BaseService
 from erica.api.service.grundsteuer_service import GrundsteuerServiceInterface
 from erica.api.service.tax_declaration_service import TaxDeclarationServiceInterface
 from erica.api.service.tax_number_validition_service import TaxNumberValidityServiceInterface
+from erica.api.service.ustva_service import UstvaServiceInterface
 from erica.domain.model.erica_request import RequestType
 
 
@@ -21,6 +22,7 @@ def get_service(request_type: RequestType) -> BaseService:
         RequestType.freischalt_code_revocate: injector.inject(FreischaltCodeServiceInterface),
         RequestType.check_tax_number: injector.inject(TaxNumberValidityServiceInterface),
         RequestType.send_est: injector.inject(TaxDeclarationServiceInterface),
-        RequestType.grundsteuer: injector.inject(GrundsteuerServiceInterface)
+        RequestType.grundsteuer: injector.inject(GrundsteuerServiceInterface),
+        RequestType.send_ustva: injector.inject(UstvaServiceInterface)
     }
     return switcher.get(request_type)

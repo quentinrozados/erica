@@ -5,17 +5,19 @@ from erica.worker.jobs.freischaltcode_jobs import activate_freischalt_code, revo
 from erica.job_service.job_service_factory import get_job_service
 from erica.worker.jobs.grundsteuer_jobs import send_grundsteuer
 from erica.worker.jobs.tax_declaration_jobs import send_est
+from erica.worker.jobs.ustva_jobs import send_ustva
 from erica.worker.jobs.tax_number_validation_jobs import check_tax_number
 from erica.domain.payload.freischaltcode import FreischaltCodeRequestPayload, FreischaltCodeActivatePayload, \
     FreischaltCodeRevocatePayload
 from erica.domain.model.base_domain_model import BasePayload
 from erica.domain.model.erica_request import RequestType
 from erica.domain.payload.tax_declaration import TaxDeclarationPayload
+from erica.domain.payload.ustva import UstvaPayload
 from erica.domain.payload.tax_number_validation import CheckTaxNumberPayload
 from erica.api.dto.grundsteuer_dto import GrundsteuerPayload
 from erica.worker.request_processing.requests_controller import UnlockCodeRevocationRequestController, \
     UnlockCodeRequestController, CheckTaxNumberRequestController, UnlockCodeActivationRequestController, \
-    EstRequestController
+    EstRequestController, UstvaRequestController
 from erica.domain.sqlalchemy.repositories.erica_request_repository import EricaRequestRepository
 from erica.worker.request_processing.grundsteuer_request_controller import GrundsteuerRequestController
 
@@ -82,3 +84,12 @@ class TestJobServiceFactory:
         assert issubclass(job_service.payload_type, GrundsteuerPayload)
         assert issubclass(job_service.request_controller, GrundsteuerRequestController)
         assert job_service.job_method == send_grundsteuer
+
+    @pytest.mark.usefixtures('fake_db_connection_in_settings')
+    def test_if_send_ustva_type_then_return_correctly_configured_service(self):
+        job_service = get_job_service(RequestType.send_ustva)
+
+        assert isinstance(job_service.repository, EricaRequestRepository)
+        assert issubclass(job_service.payload_type, UstvaPayload)
+        assert issubclass(job_service.request_controller, UstvaRequestController)
+        assert job_service.job_method == send_ustva

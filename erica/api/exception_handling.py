@@ -17,6 +17,7 @@ job_type_to_endpoint = {
     RequestType.send_est: 'get_send_est_job',
     RequestType.check_tax_number: 'get_valid_tax_number_job',
     RequestType.grundsteuer: 'get_grundsteuer_job',
+    RequestType.send_ustva: 'get_send_ustva_job',
 }
 
 

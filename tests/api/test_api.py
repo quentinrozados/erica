@@ -8,6 +8,7 @@ from erica.api.v2.endpoints.est import send_est, get_send_est_job
 from erica.api.v2.endpoints.fsc import request_fsc, get_fsc_request_job, activate_fsc, get_fsc_activation_job, \
     revocate_fsc, get_fsc_revocation_job
 from erica.api.v2.endpoints.grundsteuer import send_grundsteuer, get_grundsteuer_job
+from erica.api.v2.endpoints.ustva import send_ustva, get_send_ustva_job
 from erica.api.v2.endpoints.tax import is_valid_tax_number, get_valid_tax_number_job
 from erica.api.service.freischaltcode_service import FreischaltCodeService
 from erica.job_service.job_service import JobService
@@ -16,12 +17,13 @@ from erica.api.dto.erica_request_dto import EricaRequestDto
 from erica.api.service.grundsteuer_service import GrundsteuerService
 from erica.api.service.tax_declaration_service import TaxDeclarationService
 from erica.api.service.tax_number_validition_service import TaxNumberValidityService
+from erica.api.service.ustva_service import UstvaService
 from erica.domain.model.erica_request import EricaRequest, RequestType, Status
 from api.service.test_job_service import MockEricaRequestRepository, MockRequestController, MockDto, \
     PickableMock
 from utils import create_unlock_code_request, \
     create_unlock_code_activation, create_unlock_code_revocation, create_tax_number_validity, create_send_est, \
-    get_job_service_patch_string, create_send_grundsteuer
+    get_job_service_patch_string, create_send_grundsteuer, create_send_ustva
 
 
 @pytest.mark.asyncio
@@ -36,9 +38,10 @@ from utils import create_unlock_code_request, \
                            "get_valid_tax_number_job"),
                           (send_est, create_send_est(), RequestType.send_est, "est", "get_send_est_job"),
                           (send_grundsteuer, create_send_grundsteuer(), RequestType.grundsteuer, "grundsteuer",
-                           "get_grundsteuer_job")],
+                           "get_grundsteuer_job"),
+                          (send_ustva, create_send_ustva(), RequestType.send_ustva, "ustva", "get_send_ustva_job")],
                          ids=["request_fsc", "activate_fsc", "revocate_fsc", "is_valid_tax_number", "send_est",
-                              "grundsteuer"])
+                              "grundsteuer", "ustva"])
 async def test_if_post_job_returns_location_with_uuid(api_method, input_data, request_type, endpoint_to_patch,
                                                       expected_location):
     request_id = uuid.uuid4()
@@ -160,6 +163,24 @@ async def test_if_get_grundsteuer_job_returns_success_status_with_result():
 
 
 @pytest.mark.asyncio
+async def test_if_get_ustva_job_returns_success_status_with_result():
+    request_id = uuid.uuid4()
+    transferticket = "TEST-TICKET"
+    erica_request = EricaRequest(type=RequestType.send_ustva, status=Status.success,
+                                 payload={},
+                                 result={"transferticket": transferticket},
+                                 request_id=request_id, creator_id="test")
+    with patch("erica.api.v2.endpoints.ustva.get_service", MagicMock()) as get_service_mock:
+        mock_service = MagicMock(get_request_by_request_id=MagicMock(return_value=erica_request))
+        get_service_mock.return_value = UstvaService(service=mock_service)
+        response = await get_send_ustva_job(request_id)
+        assert response.process_status == JobState.SUCCESS
+        assert response.result.transferticket == transferticket
+        assert response.error_code is None
+        assert response.error_message is None
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("api_method, request_type",
                          [(get_fsc_request_job, RequestType.freischalt_code_request),
                           (get_fsc_activation_job, RequestType.freischalt_code_activate),
@@ -241,6 +262,25 @@ async def test_if_get_grundsteuer_job_returns_failure_status():
 
 
 @pytest.mark.asyncio
+async def test_if_get_ustva_job_returns_failure_status():
+    request_id = uuid.uuid4()
+    error_code = "1"
+    error_message = "wingardium leviosa"
+    erica_request = EricaRequest(type=RequestType.send_ustva, status=Status.failed,
+                                 error_code=error_code,
+                                 error_message=error_message,
+                                 request_id=request_id, creator_id="test")
+    with patch("erica.api.v2.endpoints.ustva.get_service", MagicMock()) as get_service_mock:
+        mock_service = MagicMock(get_request_by_request_id=MagicMock(return_value=erica_request))
+        get_service_mock.return_value = UstvaService(service=mock_service)
+        response = await get_send_ustva_job(request_id)
+        assert response.process_status == JobState.FAILURE
+        assert response.error_code == error_code
+        assert response.error_message == error_message
+        assert response.result is None
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize("mock_job_state", [Status.new, Status.scheduled, Status.processing])
 @pytest.mark.parametrize("api_method, request_type",
                          [(get_fsc_request_job, RequestType.freischalt_code_request),
@@ -288,6 +328,23 @@ async def test_if_get_est_job_returns_processing_status(mock_job_state, api_meth
     with patch("erica.api.v2.endpoints.est.get_service", MagicMock()) as get_service_mock:
         mock_service = MagicMock(get_request_by_request_id=MagicMock(return_value=erica_request))
         get_service_mock.return_value = TaxDeclarationService(service=mock_service)
+        response = await api_method(request_id)
+        assert response.process_status == JobState.PROCESSING
+        assert response.result is None
+        assert response.error_code is None
+        assert response.error_message is None
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("mock_job_state", [Status.new, Status.scheduled, Status.processing])
+@pytest.mark.parametrize("api_method, request_type", [(get_send_ustva_job, RequestType.send_ustva)])
+async def test_if_get_ustva_job_returns_processing_status(mock_job_state, api_method, request_type):
+    request_id = uuid.uuid4()
+    erica_request = EricaRequest(type=request_type, status=mock_job_state,
+                                 request_id=request_id, creator_id="test")
+    with patch("erica.api.v2.endpoints.ustva.get_service", MagicMock()) as get_service_mock:
+        mock_service = MagicMock(get_request_by_request_id=MagicMock(return_value=erica_request))
+        get_service_mock.return_value = UstvaService(service=mock_service)
         response = await api_method(request_id)
         assert response.process_status == JobState.PROCESSING
         assert response.result is None

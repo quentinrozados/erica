@@ -9,16 +9,18 @@ from erica.worker.request_processing.grundsteuer_request_controller import Grund
 from erica.api.dto.grundsteuer_dto import GrundsteuerPayload
 from erica.worker.jobs.grundsteuer_jobs import send_grundsteuer
 from erica.worker.jobs.tax_declaration_jobs import send_est
+from erica.worker.jobs.ustva_jobs import send_ustva
 from erica.domain.payload.freischaltcode import FreischaltCodeRevocatePayload, FreischaltCodeActivatePayload, \
     FreischaltCodeRequestPayload
 from erica.domain.model.base_domain_model import BasePayload
 from erica.worker.jobs.tax_number_validation_jobs import check_tax_number
 from erica.domain.model.erica_request import RequestType
 from erica.domain.payload.tax_declaration import TaxDeclarationPayload
+from erica.domain.payload.ustva import UstvaPayload
 from erica.domain.payload.tax_number_validation import CheckTaxNumberPayload
 from erica.worker.request_processing.requests_controller import UnlockCodeRequestController, \
     UnlockCodeActivationRequestController, UnlockCodeRevocationRequestController, EricaRequestController, \
-    CheckTaxNumberRequestController, EstRequestController
+    CheckTaxNumberRequestController, EstRequestController, UstvaRequestController
 
 
 def _freischalt_code_request_injector():
@@ -80,6 +82,18 @@ def _send_est_injector():
         module
     ])
 
+
+def _send_ustva_injector():
+    module = ApplicationModule()
+    module.bind(Type[EricaRequestController], to_instance=UstvaRequestController)
+    module.bind(Type[BasePayload], to_instance=UstvaPayload)
+    module.bind(JobServiceInterface, to_class=JobService)
+    module.bind(Callable, to_instance=send_ustva)
+
+    return Injector([
+        module
+    ])
+
 def _send_grundsteuer():
     module = ApplicationModule()
     module.bind(Type[EricaRequestController], to_instance=GrundsteuerRequestController)
@@ -99,6 +113,7 @@ injectors = {
     RequestType.check_tax_number: _check_tax_number_injector,
     RequestType.send_est: _send_est_injector,
     RequestType.grundsteuer: _send_grundsteuer,
+    RequestType.send_ustva: _send_ustva_injector,
 }
 
 

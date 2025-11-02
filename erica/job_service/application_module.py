@@ -7,6 +7,7 @@ from erica.api.service.tax_declaration_service import TaxDeclarationServiceInter
     TaxDeclarationService
 from erica.api.service.tax_number_validition_service import TaxNumberValidityServiceInterface, \
     TaxNumberValidityService
+from erica.api.service.ustva_service import UstvaServiceInterface, UstvaService
 from erica.domain.infrastructure_module import InfrastructureModule
 
 
@@ -17,4 +18,5 @@ class ApplicationModule(Module):
         self.bind(TaxDeclarationServiceInterface, to_class=TaxDeclarationService)
         self.bind(TaxNumberValidityServiceInterface, to_class=TaxNumberValidityService)
         self.bind(GrundsteuerServiceInterface, to_class=GrundsteuerService)
+        self.bind(UstvaServiceInterface, to_class=UstvaService)
         self.install(InfrastructureModule())
